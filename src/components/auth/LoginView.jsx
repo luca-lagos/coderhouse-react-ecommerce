@@ -65,13 +65,14 @@ const LoginView = () => {
 
   const HandleGoogleLogin = async (e) => {
     e.preventDefault();
-    await googleLogin("/User");
+    await googleLogin();
   };
 
   useEffect(() => {
     setLoading(true);
     setTimeout(() => setLoading(false), 1500);
   }, []);
+
   return (
     <>
       {loginSuccess && (
@@ -80,7 +81,11 @@ const LoginView = () => {
         </>
       )}
       {registerSuccess && (
-        <Snackbar open={snackbar} onClose={HandleCloseSnackbar}>
+        <Snackbar
+          open={snackbar}
+          onClose={HandleCloseSnackbar}
+          autoHideDuration={1500}
+        >
           <Alert
             onClose={HandleCloseSnackbar}
             severity="success"

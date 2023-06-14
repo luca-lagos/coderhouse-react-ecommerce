@@ -10,7 +10,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { useCart } from "../../hooks/customHooks";
+import { useCart, useAuth } from "../../hooks/customHooks";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link } from "react-router-dom";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
@@ -25,6 +25,8 @@ const CartContainer = () => {
     snackDeleteItemCart,
     CloseAllSnackbar,
   } = useCart();
+
+  const { userLogged } = useAuth();
 
   useEffect(() => {
     setLoading(true);
@@ -197,24 +199,63 @@ const CartContainer = () => {
                     pl: { xs: 0, md: 3 },
                     pr: { xs: 0, md: 3 },
                     mb: 2,
+                    alignItems: "center",
                   }}
                 >
-                  <Typography variant="h4" sx={{ width: "85%", fontSize: 25 }}>
-                    TOTAL: ${GetTotalPrice()}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      width: "15%",
-                      fontSize: 20,
-                      fontWeight: "bold",
-                      backgroundColor: "#3c733f",
-                      mb: { xs: 2, md: 0 },
-                      "&:hover": { backgroundColor: "#224024" },
-                    }}
-                  >
-                    BUY
-                  </Button>
+                  {userLogged != null ? (
+                    <>
+                      <Typography
+                        variant="h4"
+                        sx={{ width: "35%", fontSize: 25 }}
+                      >
+                        TOTAL: ${GetTotalPrice()}
+                      </Typography>
+
+                      <Typography
+                        variant="h3"
+                        sx={{ width: "50%", fontSize: 18, fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: 1 }}
+                      >
+                        Buy as <p style={{color: "#66bb6a"}}>{userLogged.email}</p>
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          width: "15%",
+                          fontSize: 20,
+                          fontWeight: "bold",
+                          backgroundColor: "#3c733f",
+                          mb: { xs: 2, md: 0 },
+                          "&:hover": { backgroundColor: "#224024" },
+                        }}
+                      >
+                        BUY
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Typography
+                        variant="h4"
+                        sx={{ width: "85%", fontSize: 25 }}
+                      >
+                        TOTAL: ${GetTotalPrice()}
+                      </Typography>
+                      <Link to={"/login"} style={{ width: "15%" }}>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            width: "100%",
+                            fontSize: 20,
+                            fontWeight: "bold",
+                            backgroundColor: "#3c733f",
+                            mb: { xs: 2, md: 0 },
+                            "&:hover": { backgroundColor: "#224024" },
+                          }}
+                        >
+                          LOGIN
+                        </Button>
+                      </Link>
+                    </>
+                  )}
                 </Box>
               </Card>
             ) : (

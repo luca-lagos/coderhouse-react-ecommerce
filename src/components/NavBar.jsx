@@ -16,6 +16,7 @@ import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/SwipeableDrawer";
 import { Tooltip } from "@mui/material";
 import { useCart, useAuth } from "../hooks/customHooks";
+import LoginIcon from "@mui/icons-material/Login";
 
 const loginSettings = [
   { name: "My profile", link: "my-profile" },
@@ -32,8 +33,6 @@ const NavBar = () => {
   const { userLogged } = useAuth();
 
   const { cart } = useCart();
-
-  console.log(cart);
 
   useEffect(() => {
     getData(0).then((res) => {
@@ -139,7 +138,9 @@ const NavBar = () => {
                       <Avatar
                         alt="Remy Sharp"
                         sx={{ backgroundColor: "#66bb6a", color: "#272727" }}
-                      />
+                      >
+                        <LoginIcon />
+                      </Avatar>
                     </IconButton>
                   </Tooltip>
                 </Link>

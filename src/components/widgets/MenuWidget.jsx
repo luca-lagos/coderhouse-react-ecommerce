@@ -15,7 +15,7 @@ import {
   Backdrop,
   Fade,
 } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getData } from "../../helpers/getData";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
@@ -26,7 +26,6 @@ const MenuWidget = ({ title, items, HandleClose }) => {
   const [categoryList, setCategoryList] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const { logOut } = useAuth();
-  const navigate = useNavigate();
   useEffect(() => {
     getData(0).then((res) => {
       setCategoryList(res["categories"]);
@@ -49,7 +48,6 @@ const MenuWidget = ({ title, items, HandleClose }) => {
   const LogOut = () => {
     logOut();
     HandleCloseModal();
-    navigate("/");
   };
 
   return (

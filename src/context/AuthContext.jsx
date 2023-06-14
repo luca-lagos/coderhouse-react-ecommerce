@@ -9,7 +9,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -88,8 +88,7 @@ export const AuthProvider = ({ children }) => {
         setButtonLoading(false);
         setError(false);
         setLoginSuccess(true);
-        setMessage("You have logged in successfully");
-        setTimeout(() => setLoginSuccess(false), 3000);
+        setTimeout(() => setLoginSuccess(false), 500);
       })
       .catch((err) => {
         setButtonLoading(false);
@@ -99,40 +98,15 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const googleLogin = async (path) => {
+  const googleLogin = async () => {
     setGoogleLoading(true);
     const googleProvider = new GoogleAuthProvider();
     await signInWithPopup(auth, googleProvider)
-      .then((res) => {
-        const user = res.user;
-        const search = getDoc(doc(database, path, user.uid));
-        console.log(search);
-        if (search != null) {
-          setGoogleLoading(false);
-          setError(false);
-          setLoginSuccess(true);
-          setMessage("You have logged in with Google successfully");
-          setTimeout(() => setRegisterSuccess(false), 3000);
-        } else {
-          setDoc(doc(database, path, user.uid), {
-            fullname: user.displayName,
-            email: user.email,
-            authProvider: "google",
-          })
-            .then(() => {
-              setGoogleLoading(false);
-              setError(false);
-              setLoginSuccess(true);
-              setMessage("You have register with Google successfully");
-              setTimeout(() => setRegisterSuccess(false), 3000);
-            })
-            .catch((err) => {
-              setGoogleLoading(false);
-              setError(true);
-              setLoginSuccess(false);
-              console.log(err.code);
-            });
-        }
+      .then(() => {
+        setGoogleLoading(false);
+        setError(false);
+        setLoginSuccess(true);
+        setTimeout(() => setLoginSuccess(false), 500);
       })
       .catch((err) => {
         setError(true);
@@ -148,6 +122,7 @@ export const AuthProvider = ({ children }) => {
 
   const logOut = () => {
     signOut(auth);
+    setLoginSuccess(false);
   };
 
   const CloseAllSnackbar = () => {

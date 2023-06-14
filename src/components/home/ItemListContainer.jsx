@@ -10,7 +10,7 @@ import { CircularProgress } from "@mui/material";
 const ItemListContainer = () => {
   const [loading, setLoading] = useState(true);
   const [productList, setProductList] = useState([]);
-  const [title, setTitle] = useState(null);
+  const [title, setTitle] = useState(null)
   const category = useParams().category;
 
   useEffect(() => {
