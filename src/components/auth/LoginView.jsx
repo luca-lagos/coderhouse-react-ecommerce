@@ -5,12 +5,19 @@ import {
   TextField,
   Container,
   Typography,
-  Button,
   Divider,
   Snackbar,
   Alert,
+  FormControl,
+  InputLabel,
+  FilledInput,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import MaterialLink from "@mui/material/Link";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/customHooks";
@@ -20,6 +27,7 @@ import { Link, Navigate } from "react-router-dom";
 const LoginView = () => {
   const [loading, setLoading] = useState(true);
   const [snackbar, setSnackbar] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const {
     commonLogin,
     googleLogin,
@@ -28,6 +36,7 @@ const LoginView = () => {
     loginSuccess,
     message,
     buttonLoading,
+    googleLoading,
     CloseAllSnackbar,
   } = useAuth();
   const [user, setUser] = useState({
@@ -35,12 +44,28 @@ const LoginView = () => {
     password: "",
   });
 
+  const HandleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const HandleMouseDownPassword = (e) => {
+    e.preventDefault();
+  };
+
   const HandleUserChange = ({ target: { name, value } }) => {
     setUser({ ...user, [name]: value });
   };
 
   const HandleCloseSnackbar = () => {
     setSnackbar(false);
+  };
+
+  const HandleCommonLogin = async (e) => {
+    e.preventDefault();
+    await commonLogin(user);
+  };
+
+  const HandleGoogleLogin = async (e) => {
+    e.preventDefault();
+    await googleLogin("/User");
   };
 
   useEffect(() => {
@@ -55,11 +80,7 @@ const LoginView = () => {
         </>
       )}
       {registerSuccess && (
-        <Snackbar
-          open={snackbar}
-          onClose={HandleCloseSnackbar}
-          autoHideDuration={1500}
-        >
+        <Snackbar open={snackbar} onClose={HandleCloseSnackbar}>
           <Alert
             onClose={HandleCloseSnackbar}
             severity="success"
@@ -69,6 +90,15 @@ const LoginView = () => {
           </Alert>
         </Snackbar>
       )}
+      <Snackbar open={error} onClose={CloseAllSnackbar} autoHideDuration={1500}>
+        <Alert
+          onClose={CloseAllSnackbar}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {message}
+        </Alert>
+      </Snackbar>
       <Container
         maxWidth="xl"
         sx={{
@@ -134,16 +164,26 @@ const LoginView = () => {
                   color="success"
                   onChange={HandleUserChange}
                 />
-                <TextField
-                  sx={{ width: "100%" }}
-                  error={false}
-                  label="Password"
-                  name="password"
-                  helperText=""
-                  variant="filled"
-                  color="success"
-                  onChange={HandleUserChange}
-                />
+                <FormControl sx={{ width: "100%" }} variant="filled">
+                  <InputLabel color="success">Password</InputLabel>
+                  <FilledInput
+                    name="password"
+                    color="success"
+                    type={showPassword ? "text" : "password"}
+                    onChange={HandleUserChange}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={HandleClickShowPassword}
+                          onMouseDown={HandleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
                 <Box
                   sx={{
                     display: "flex",
@@ -152,7 +192,7 @@ const LoginView = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Button
+                  <LoadingButton
                     variant="contained"
                     sx={{
                       width: { xs: "100%", md: "40%" },
@@ -162,9 +202,12 @@ const LoginView = () => {
                       mb: { xs: 2, md: 0 },
                       "&:hover": { backgroundColor: "#224024" },
                     }}
+                    onClick={HandleCommonLogin}
+                    loading={buttonLoading}
+                    loadingPosition="end"
                   >
-                    LOGIN
-                  </Button>
+                    <span>LOGIN</span>
+                  </LoadingButton>
                   <Box
                     sx={{
                       display: "flex",
@@ -198,7 +241,7 @@ const LoginView = () => {
                 </Box>
               </Box>
               <Divider sx={{ mt: "-15px", mb: "-15px" }} />
-              <Button
+              <LoadingButton
                 variant="contained"
                 sx={{
                   width: "100%",
@@ -211,10 +254,13 @@ const LoginView = () => {
                   gap: 1,
                   "&:hover": { backgroundColor: "#a63329" },
                 }}
+                onClick={HandleGoogleLogin}
+                loading={googleLoading}
+                loadingPosition="end"
               >
                 <Typography variant="p">Login with</Typography>{" "}
                 <GoogleIcon sx={{ width: "20px" }} />
-              </Button>
+              </LoadingButton>
             </Card>
           </>
         )}

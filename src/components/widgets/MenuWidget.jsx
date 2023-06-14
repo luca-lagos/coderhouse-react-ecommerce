@@ -7,15 +7,26 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
-import { CardMedia, CardContent, Chip } from "@mui/material";
-import { Link } from "react-router-dom";
+import {
+  CardMedia,
+  CardContent,
+  Chip,
+  Modal,
+  Backdrop,
+  Fade,
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getData } from "../../helpers/getData";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
 import TinyColor from "tinycolor2";
+import { useAuth } from "../../hooks/customHooks";
 
 const MenuWidget = ({ title, items, HandleClose }) => {
   const [categoryList, setCategoryList] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const { logOut } = useAuth();
+  const navigate = useNavigate();
   useEffect(() => {
     getData(0).then((res) => {
       setCategoryList(res["categories"]);
@@ -27,8 +38,81 @@ const MenuWidget = ({ title, items, HandleClose }) => {
     return result[0]?.link + "/" + e.link;
   };
 
+  const HandleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const HandleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const LogOut = () => {
+    logOut();
+    HandleCloseModal();
+    navigate("/");
+  };
+
   return (
     <>
+      <Modal
+        disableEnforceFocus
+        open={modalOpen}
+        onClose={HandleCloseModal}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <Fade in={modalOpen}>
+          <Box
+            sx={{
+              backgroundColor: "white",
+              p: 4,
+              borderRadius: 2,
+              boxShadow: "0px 4px 2px #696969",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <Typography variant="p">
+              Are you sure you want to log out?
+            </Typography>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Button
+                sx={{ color: "#272727", fontWeight: "bold" }}
+                onClick={HandleCloseModal}
+              >
+                No, cancel
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "#d32f2f",
+                  color: "white",
+                  fontWeight: "bold",
+                  "&:hover": {
+                    backgroundColor: "#9a2222",
+                  },
+                }}
+                onClick={LogOut}
+              >
+                Yes, logout
+              </Button>
+            </Box>
+          </Box>
+        </Fade>
+      </Modal>
       {title === "MY CART" ? (
         <Box
           role="presentation"
@@ -98,7 +182,9 @@ const MenuWidget = ({ title, items, HandleClose }) => {
                               sx={{
                                 fontWeight: 600,
                                 backgroundColor: value.color,
-                                color: TinyColor(value.color).isDark() ? "white" : "#272727",
+                                color: TinyColor(value.color).isDark()
+                                  ? "white"
+                                  : "#272727",
                               }}
                               label={value.color}
                             />
@@ -194,6 +280,11 @@ const MenuWidget = ({ title, items, HandleClose }) => {
                 </ListItem>
               </Link>
             ))}
+            <ListItem disablePadding onClick={HandleOpenModal}>
+              <ListItemButton>
+                <ListItemText primary="Logout" sx={{ color: "#969696" }} />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       )}

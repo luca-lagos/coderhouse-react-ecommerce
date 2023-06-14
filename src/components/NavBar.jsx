@@ -15,13 +15,12 @@ import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/SwipeableDrawer";
 import { Tooltip } from "@mui/material";
-import { useCart } from "../hooks/customHooks";
+import { useCart, useAuth } from "../hooks/customHooks";
 
-const settings = [
-  { name: "Mi perfil", link: "my-profile" },
-  { name: "Órdenes", link: "buying-list" },
-  { name: "Favoritos", link: "fauvorites" },
-  { name: "Cerrar sesión", link: "logout" },
+const loginSettings = [
+  { name: "My profile", link: "my-profile" },
+  { name: "My buying list", link: "buying-list" },
+  { name: "My favourites", link: "favourites" },
 ];
 
 const NavBar = () => {
@@ -30,9 +29,9 @@ const NavBar = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [categoryList, setCategoryList] = useState([]);
 
-  const { cart } = useCart();
+  const { userLogged } = useAuth();
 
-  const login = false;
+  const { cart } = useCart();
 
   console.log(cart);
 
@@ -78,7 +77,6 @@ const NavBar = () => {
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
-                aria-label="mi cuenta"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 onClick={() => setMenuOpen(true)}
@@ -110,7 +108,7 @@ const NavBar = () => {
               </Link>
             </Typography>
             <Box sx={{ flexGrow: 0, mr: 2 }}>
-              {login ? (
+              {userLogged != null ? (
                 <>
                   <IconButton onClick={() => setUserOpen(true)}>
                     <Avatar
@@ -129,7 +127,7 @@ const NavBar = () => {
                   >
                     <MenuWidget
                       title="MY ACCOUNT"
-                      items={settings}
+                      items={loginSettings}
                       HandleClose={HandleUserClose}
                     />
                   </Drawer>

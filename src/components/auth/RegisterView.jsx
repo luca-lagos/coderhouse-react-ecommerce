@@ -8,7 +8,14 @@ import {
   Divider,
   Snackbar,
   Alert,
+  FormControl,
+  InputLabel,
+  FilledInput,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "@mui/lab/LoadingButton";
 import MaterialLink from "@mui/material/Link";
 import { useEffect, useState } from "react";
@@ -18,6 +25,8 @@ import { Link, Navigate } from "react-router-dom";
 
 const RegisterView = () => {
   const [loading, setLoading] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const {
     commonRegister,
     error,
@@ -32,6 +41,19 @@ const RegisterView = () => {
     password: "",
     repeatPassword: "",
   });
+
+  const HandleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const HandleMouseDownPassword = (e) => {
+    e.preventDefault();
+  };
+
+  const HandleClickShowRepeatPassword = () =>
+    setShowRepeatPassword((show) => !show);
+
+  const HandleMouseDownRepeatPassword = (e) => {
+    e.preventDefault();
+  };
 
   const HandleUserChange = ({ target: { name, value } }) => {
     setUser({ ...user, [name]: value });
@@ -134,22 +156,50 @@ const RegisterView = () => {
                   color="success"
                   onChange={HandleUserChange}
                 />
-                <TextField
-                  sx={{ width: "100%" }}
-                  label="Password"
-                  name="password"
-                  variant="filled"
-                  color="success"
-                  onChange={HandleUserChange}
-                />
-                <TextField
-                  sx={{ width: "100%" }}
-                  label="Repeat Password"
-                  name="repeatPassword"
-                  variant="filled"
-                  color="success"
-                  onChange={HandleUserChange}
-                />
+                <FormControl sx={{ width: "100%" }} variant="filled">
+                  <InputLabel color="success">Password</InputLabel>
+                  <FilledInput
+                    name="password"
+                    color="success"
+                    type={showPassword ? "text" : "password"}
+                    onChange={HandleUserChange}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={HandleClickShowPassword}
+                          onMouseDown={HandleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+                <FormControl sx={{ width: "100%" }} variant="filled">
+                  <InputLabel color="success">Repeat password</InputLabel>
+                  <FilledInput
+                    name="repeatPassword"
+                    color="success"
+                    type={showRepeatPassword ? "text" : "password"}
+                    onChange={HandleUserChange}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={HandleClickShowRepeatPassword}
+                          onMouseDown={HandleMouseDownRepeatPassword}
+                          edge="end"
+                        >
+                          {showRepeatPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
                 <LoadingButton
                   variant="contained"
                   sx={{
