@@ -1,36 +1,29 @@
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { getData } from "../../helpers/getData";
 import { useState, useEffect } from "react";
 import ItemList from "./ItemList";
 import { useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
+import { useItem } from "../../hooks/customHooks";
 
 const ItemListContainer = () => {
-  const [loading, setLoading] = useState(true);
   const [productList, setProductList] = useState([]);
-  const [title, setTitle] = useState(null)
+  const [title, setTitle] = useState(null);
   const category = useParams().category;
 
+  const { items, categories, loading } = useItem();
+
   useEffect(() => {
-    setLoading(true);
-    getData(1500).then((res) => {
-      if (category) {
-        const search = res["categories"].filter((c) => c.link === category);
-        setTitle(search[0]?.name);
-        setProductList(
-          res["products"].filter(
-            (product) => product.category === search[0]?.id
-          )
-        );
-      } else {
-        setTitle("All products");
-        setProductList(res["products"]);
-      }
-      setLoading(false);
-    });
-  }, [category]);
+    if (category) {
+      const search = categories.filter((c) => c.key === category);
+      setTitle(search[0]?.name);
+      setProductList(items.filter((doc) => doc.categoryId === search[0]?.id));
+    } else {
+      setTitle("All products");
+      setProductList(items);
+    }
+  }, [categories, items, category]);
 
   return (
     <>

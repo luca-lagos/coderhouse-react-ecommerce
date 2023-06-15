@@ -1,30 +1,25 @@
 import { Link, useParams } from "react-router-dom";
-import { getData } from "../../../helpers/getData";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Chip } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { CardMedia, CardContent } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import TinyColor from "tinycolor2";
+import { useItem } from "../../../hooks/customHooks";
 
 const Item = ({ product }) => {
   const [overlay, setOverlay] = useState(false);
-  const [categoryList, setCategoryList] = useState([]);
   const category = useParams().category;
+  const { categories } = useItem();
   let link = "";
-  useEffect(() => {
-    getData(0).then((res) => {
-      setCategoryList(res["categories"]);
-    });
-  }, []);
 
-  const result = categoryList.filter((c) => c.id === product.category);
+  const result = categories.filter((c) => c.id === product.categoryId);
   if (category === undefined) {
-    link = result[0]?.link + "/" + product.link;
+    link = result[0]?.key + "/" + product.key;
   } else {
-    link = product.link;
+    link = product.key;
   }
 
   return (

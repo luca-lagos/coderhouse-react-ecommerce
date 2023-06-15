@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { getData } from "../helpers/getData";
+import { useState } from "react";
 import CartWidget from "./widgets/cart/CartWidget";
 import MenuWidget from "./widgets/MenuWidget";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -15,7 +14,7 @@ import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/SwipeableDrawer";
 import { Tooltip } from "@mui/material";
-import { useCart, useAuth } from "../hooks/customHooks";
+import { useCart, useAuth, useItem } from "../hooks/customHooks";
 import LoginIcon from "@mui/icons-material/Login";
 
 const loginSettings = [
@@ -28,17 +27,12 @@ const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userOpen, setUserOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [categoryList, setCategoryList] = useState([]);
+
+  const { categories } = useItem();
 
   const { userLogged } = useAuth();
 
   const { cart } = useCart();
-
-  useEffect(() => {
-    getData(0).then((res) => {
-      setCategoryList(res["categories"]);
-    });
-  }, []);
 
   const HandleMenuClose = () => {
     setMenuOpen(false);
@@ -90,7 +84,7 @@ const NavBar = () => {
               >
                 <MenuWidget
                   title="CATEGORIES"
-                  items={categoryList}
+                  items={categories}
                   HandleClose={HandleMenuClose}
                 />
               </Drawer>
@@ -178,8 +172,8 @@ const NavBar = () => {
           }}
         >
           <Box sx={{ display: "flex" }}>
-            {categoryList.map((value, index) => (
-              <Link to={value.link} key={index}>
+            {categories.map((value, index) => (
+              <Link to={value.key} key={index}>
                 <Button
                   sx={{
                     my: 2,

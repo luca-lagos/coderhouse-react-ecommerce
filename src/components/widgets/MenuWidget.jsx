@@ -16,24 +16,19 @@ import {
   Fade,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getData } from "../../helpers/getData";
+import { useState } from "react";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
 import TinyColor from "tinycolor2";
-import { useAuth } from "../../hooks/customHooks";
+import { useAuth, useItem } from "../../hooks/customHooks";
 
 const MenuWidget = ({ title, items, HandleClose }) => {
-  const [categoryList, setCategoryList] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const { logOut } = useAuth();
-  useEffect(() => {
-    getData(0).then((res) => {
-      setCategoryList(res["categories"]);
-    });
-  }, []);
+  const { logOut, userLogged } = useAuth();
+  const { categories } = useItem();
+
 
   const SetItemLink = (e) => {
-    const result = categoryList.filter((c) => c.id === e.category);
+    const result = categories.filter((c) => c.id === e.categoryId);
     return result[0]?.link + "/" + e.link;
   };
 
@@ -267,7 +262,7 @@ const MenuWidget = ({ title, items, HandleClose }) => {
           <Divider />
           <List>
             {items?.map((value, index) => (
-              <Link key={index} to={value.link}>
+              <Link key={index} to={value.key}>
                 <ListItem disablePadding onClick={HandleClose}>
                   <ListItemButton>
                     <ListItemText
@@ -278,11 +273,15 @@ const MenuWidget = ({ title, items, HandleClose }) => {
                 </ListItem>
               </Link>
             ))}
-            <ListItem disablePadding onClick={HandleOpenModal}>
-              <ListItemButton>
-                <ListItemText primary="Logout" sx={{ color: "#969696" }} />
-              </ListItemButton>
-            </ListItem>
+            {userLogged != null ? (
+              <ListItem disablePadding onClick={HandleOpenModal}>
+                <ListItemButton>
+                  <ListItemText primary="Logout" sx={{ color: "#969696" }} />
+                </ListItemButton>
+              </ListItem>
+            ) : (
+              ""
+            )}
           </List>
         </Box>
       )}

@@ -8,27 +8,30 @@ import LoginView from "./components/auth/LoginView";
 import RegisterView from "./components/auth/RegisterView";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
+import { ItemProvider } from "./context/ItemContext";
 
 const App = () => {
   return (
     <>
       <AuthProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <NavBar />
-            <Routes>
-              <Route path="/" element={<ItemListContainer />} />
-              <Route path="/:category" element={<ItemListContainer />} />
-              <Route
-                path="/:category/:link"
-                element={<ItemDetailContainer />}
-              />
-              <Route path="/cart" element={<CartView />} />
-              <Route path="/login" element={<LoginView />} />
-              <Route path="/register" element={<RegisterView />} />
-            </Routes>
-          </BrowserRouter>
-        </CartProvider>
+        <ItemProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <NavBar />
+              <Routes>
+                <Route path="/" element={<ItemListContainer />} />
+                <Route path="/:category" element={<ItemListContainer />} />
+                <Route
+                  path="/:category/:link"
+                  element={<ItemDetailContainer />}
+                />
+                <Route path="/cart" element={<CartView />} />
+                <Route path="/login" element={<LoginView />} />
+                <Route path="/register" element={<RegisterView />} />
+              </Routes>
+            </BrowserRouter>
+          </CartProvider>
+        </ItemProvider>
       </AuthProvider>
     </>
   );
