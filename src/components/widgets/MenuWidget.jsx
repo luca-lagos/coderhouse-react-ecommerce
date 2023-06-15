@@ -229,7 +229,7 @@ const MenuWidget = ({ title, items, HandleClose }) => {
                       backgroundColor: "#4f8752",
                       color: "white",
                       width: "100%",
-                      mb: { xs: 2, md: 0 },
+                      mb: 4,
                       "&:hover": { backgroundColor: "#3c733f" },
                     }}
                     onClick={HandleClose}

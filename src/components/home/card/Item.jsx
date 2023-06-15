@@ -51,7 +51,7 @@ const Item = ({ product }) => {
         <CardMedia
           component="img"
           height="194"
-          image="/images/products/cloth.webp"
+          image={product.image}
           alt=""
         />
         <CardContent sx={{ textAlign: "center" }}>

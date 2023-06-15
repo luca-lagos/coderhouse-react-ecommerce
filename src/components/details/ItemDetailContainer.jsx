@@ -1,24 +1,28 @@
 import { useState, useEffect } from "react";
-import { getItemByLink } from "../../helpers/getData";
 import ItemDetail from "../details/ItemDetail";
 import { Container, Typography, Box, CircularProgress } from "@mui/material";
 import { useParams } from "react-router-dom";
+import { useItem } from "../../hooks/customHooks";
 
 const ItemDetailContainer = () => {
   const [loading, setLoading] = useState(true);
-  const [item, setItem] = useState(null);
+  const [item, setItem] = useState([]);
   const category = useParams().category;
   const link = useParams().link;
 
+  const { getItemByKey } = useItem();
+
   useEffect(() => {
-    setLoading(true);
-    return () => {
-      getItemByLink(link, 1500).then((res) => {
-        setItem(res);
-        setLoading(false);
+    getItemByKey(link).then((res) => {
+      const item = res.docs.map((doc) => {
+        const data = doc.data();
+        data.id = doc.id;
+        return data;
       });
-    };
-  }, [category, link]);
+      setItem(item);
+    });
+    setLoading(false);
+  }, [link, getItemByKey]);
 
   const actualLink = category + "/" + link;
 
@@ -47,7 +51,7 @@ const ItemDetailContainer = () => {
           </Box>
         ) : (
           <Typography>
-            <ItemDetail item={item} actualLink={actualLink}/>
+            <ItemDetail item={item} actualLink={actualLink} />
           </Typography>
         )}
       </Container>

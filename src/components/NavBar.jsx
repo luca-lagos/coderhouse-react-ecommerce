@@ -168,15 +168,14 @@ const NavBar = () => {
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "#3c733f",
-            height: "60px",
+            height: "75px",
           }}
         >
-          <Box sx={{ display: "flex" }}>
+          <Box sx={{ display: "flex", alignItems: 'center' }}>
             {categories.map((value, index) => (
               <Link to={value.key} key={index}>
                 <Button
                   sx={{
-                    my: 2,
                     mr: 1,
                     ml: 1,
                     color: "#c9c9c9",

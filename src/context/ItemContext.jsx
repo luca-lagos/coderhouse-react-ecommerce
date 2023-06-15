@@ -1,11 +1,10 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { createContext, useState, useEffect } from "react";
 import { database } from "../data/Firebase";
 
 export const ItemContext = createContext();
 
 export const ItemProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [items, setItems] = useState([]);
   const getAllCategories = async () => {
@@ -16,8 +15,12 @@ export const ItemProvider = ({ children }) => {
     return await getDocs(collection(database, "/Item"));
   };
 
+  const getItemByKey = async (key) => {
+    const q = query(collection(database, "/Item"), where("key", "==", key));
+    return await getDocs(q);
+  };
+
   useEffect(() => {
-    setLoading(true);
     getAllCategories().then((res) => {
       const categories = res.docs.map((doc) => {
         const data = doc.data();
@@ -25,12 +28,10 @@ export const ItemProvider = ({ children }) => {
         return data;
       });
       setCategories(categories);
-      setLoading(false);
     });
   }, []);
 
   useEffect(() => {
-    setLoading(false);
     getAllItems().then((res) => {
       const items = res.docs.map((doc) => {
         const data = doc.data();
@@ -38,11 +39,10 @@ export const ItemProvider = ({ children }) => {
         return data;
       });
       setItems(items);
-      setLoading(false);
     });
   }, []);
   return (
-    <ItemContext.Provider value={{ categories, items, loading }}>
+    <ItemContext.Provider value={{ categories, items, getItemByKey }}>
       {children}
     </ItemContext.Provider>
   );

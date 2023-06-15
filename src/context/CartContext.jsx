@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { createContext, useEffect, useState } from "react";
 
 export const CartContext = createContext();
@@ -9,6 +10,7 @@ export const CartProvider = ({ children }) => {
   const [snackError, setSnackError] = useState(false);
   const [snackSuccess, setSnackSuccess] = useState(false);
   const [snackDeleteItemCart, setDeleteItemCart] = useState(false);
+  const [orderLoading, setOrderLoading] = useState(false);
   const AddToCart = (item, quantity, actualLink) => {
     const itemAdded = { ...item, quantity, actualLink };
     const newCart = [...cart];
@@ -57,6 +59,19 @@ export const CartProvider = ({ children }) => {
     console.log(cart);
   };
 
+  const CreateOrder = async (uid, cart, totalPrice) => {
+    setOrderLoading(true);
+    const order = {
+      buyer: {
+        userId: uid,
+      },
+      items: cart,
+      totalPrice: totalPrice,
+      date: Timestamp.fromDate(new Date()),
+    };
+    return order;
+  };
+
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
@@ -69,6 +84,7 @@ export const CartProvider = ({ children }) => {
         QuantityCart,
         GetTotalPrice,
         DeleteItemCart,
+        CreateOrder,
         CloseAllSnackbar,
         snackError,
         snackSuccess,

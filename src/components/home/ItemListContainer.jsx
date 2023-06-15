@@ -8,13 +8,15 @@ import { CircularProgress } from "@mui/material";
 import { useItem } from "../../hooks/customHooks";
 
 const ItemListContainer = () => {
+  const [loading, setLoading] = useState(true);
   const [productList, setProductList] = useState([]);
   const [title, setTitle] = useState(null);
   const category = useParams().category;
 
-  const { items, categories, loading } = useItem();
+  const { items, categories } = useItem();
 
   useEffect(() => {
+    setLoading(true);
     if (category) {
       const search = categories.filter((c) => c.key === category);
       setTitle(search[0]?.name);
@@ -23,6 +25,7 @@ const ItemListContainer = () => {
       setTitle("All products");
       setProductList(items);
     }
+    setTimeout(() => setLoading(false), 2500);
   }, [categories, items, category]);
 
   return (

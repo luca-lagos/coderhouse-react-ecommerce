@@ -24,7 +24,7 @@ const ItemDetail = ({ item, actualLink }) => {
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => setLoading(false), 1500);
+    setTimeout(() => setLoading(false), 2500);
   }, []);
 
   const HandleSubstract = () => {
@@ -32,7 +32,7 @@ const ItemDetail = ({ item, actualLink }) => {
   };
 
   const HandleAdd = () => {
-    quantity < item?.stock && setQuantity(quantity + 1);
+    quantity < item[0].stock && setQuantity(quantity + 1);
   };
 
   const HandleCloseSnackbar = () => {
@@ -40,7 +40,7 @@ const ItemDetail = ({ item, actualLink }) => {
   };
 
   const HandleAddToCart = () => {
-    AddToCart(item, quantity, actualLink);
+    AddToCart(item[0], quantity, actualLink);
   };
 
   return (
@@ -117,15 +117,11 @@ const ItemDetail = ({ item, actualLink }) => {
               component={"h1"}
               sx={{ fontSize: 45, fontWeight: "bold" }}
             >
-              {item?.name}
+              {item[0]?.name}
             </Typography>
           </Box>
           <Box sx={{ width: { xs: 350, md: "auto" } }}>
-            <img
-              src="/images/products/cloth.webp"
-              alt=""
-              style={{ width: "100%" }}
-            />
+            <img src={item[0]?.image} alt="" style={{ width: "100%" }} />
           </Box>
           <Box
             sx={{
@@ -145,28 +141,33 @@ const ItemDetail = ({ item, actualLink }) => {
                 display: { xs: "none", md: "flex" },
               }}
             >
-              {item?.name}
+              {item[0]?.name}
             </Typography>
             <Box
               sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 2 }}
             >
-              <Chip sx={{ fontWeight: 600 }} label={"STOCK: " + item?.stock} />
+              <Chip
+                sx={{ fontWeight: 600 }}
+                label={"STOCK: " + item[0]?.stock}
+              />
               <Chip
                 sx={{
                   fontWeight: 600,
-                  backgroundColor: item?.color,
-                  color: TinyColor(item?.color).isDark() ? "white" : "#272727",
+                  backgroundColor: item[0]?.color,
+                  color: TinyColor(item[0]?.color).isDark()
+                    ? "white"
+                    : "#272727",
                 }}
-                label={item?.color}
+                label={item[0].color}
               />
               <Chip
                 sx={{ fontWeight: 600 }}
                 label={
-                  "SIZE:" + item?.size === "Small"
+                  "SIZE:" + item[0]?.size === "Small"
                     ? "S"
-                    : item?.size === "Medium"
+                    : item[0]?.size === "Medium"
                     ? "M"
-                    : item?.size === "Large"
+                    : item[0]?.size === "Large"
                     ? "L"
                     : "XL"
                 }
@@ -180,16 +181,13 @@ const ItemDetail = ({ item, actualLink }) => {
                 textAlign: { xs: "center", md: "left" },
               }}
             >
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde
-              sint provident dolor ut commodi nihil, dolorum voluptatibus
-              perspiciatis deserunt quisquam officiis sunt rerum, tempore
-              inventore dignissimos expedita architecto magnam iure.
+              {item[0]?.description}
             </Typography>
             <Typography
               component={"h2"}
               sx={{ fontSize: { xs: 50, md: 40 }, color: "#66bb6a" }}
             >
-              ${item?.price}
+              ${item[0]?.price}
             </Typography>
             <ItemCount
               quantity={quantity}

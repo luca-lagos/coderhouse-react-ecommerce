@@ -10,6 +10,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { useCart, useAuth } from "../../hooks/customHooks";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link } from "react-router-dom";
@@ -20,13 +21,26 @@ const CartContainer = () => {
   const [loading, setLoading] = useState(true);
   const {
     cart,
+    orderLoading,
     GetTotalPrice,
     DeleteItemCart,
     snackDeleteItemCart,
+    CreateOrder,
     CloseAllSnackbar,
   } = useCart();
 
   const { userLogged } = useAuth();
+
+  console.log(userLogged.uid);
+
+  const HandleCreateOrder = (e) => {
+    e.preventDefault();
+    const totalPrice = GetTotalPrice();
+    console.log(totalPrice);
+    CreateOrder(userLogged.uid, cart, totalPrice).then((res) => {
+      console.log(res);
+    });
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -55,6 +69,7 @@ const CartContainer = () => {
           flexDirection: "column",
           alignItems: "center",
           mt: { xs: 15, md: 22 },
+          p: 2,
         }}
       >
         {loading ? (
@@ -89,16 +104,16 @@ const CartContainer = () => {
             {cart != "" ? (
               <Card
                 sx={{
+                  width: "95%",
                   p: 2,
                   display: "flex",
                   gap: 5,
-                  maxWidth: { xs: 350, md: 1200 },
                   flexDirection: "column",
                 }}
               >
                 <Box
                   sx={{
-                    width: { xs: 350, md: 1200 },
+                    width: "auto",
                     maxHeight: 500,
                     overflowX: "hidden",
                     pr: 2,
@@ -164,12 +179,12 @@ const CartContainer = () => {
                             </Box>
                           </Box>
                         </Link>
-                        <Typography variant="h3" sx={{ fontSize: 25 }}>
+                        <Typography variant="h3" sx={{ fontSize: 20 }}>
                           CANT: {value.quantity}
                         </Typography>
                         <Typography
                           variant="h3"
-                          sx={{ fontSize: 30, color: "#66bb6a" }}
+                          sx={{ fontSize: 20, color: "#66bb6a" }}
                         >
                           ${Math.round(value.price * value.quantity)}
                         </Typography>
@@ -213,11 +228,19 @@ const CartContainer = () => {
 
                       <Typography
                         variant="h3"
-                        sx={{ width: "50%", fontSize: 18, fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: 1 }}
+                        sx={{
+                          width: "50%",
+                          fontSize: 18,
+                          fontStyle: "italic",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                        }}
                       >
-                        Buy as <p style={{color: "#66bb6a"}}>{userLogged.email}</p>
+                        Buy as{" "}
+                        <p style={{ color: "#66bb6a" }}>{userLogged.email}</p>
                       </Typography>
-                      <Button
+                      <LoadingButton
                         variant="contained"
                         sx={{
                           width: "15%",
@@ -227,9 +250,12 @@ const CartContainer = () => {
                           mb: { xs: 2, md: 0 },
                           "&:hover": { backgroundColor: "#224024" },
                         }}
+                        onClick={HandleCreateOrder}
+                        loading={orderLoading}
+                        loadingPosition="end"
                       >
                         BUY
-                      </Button>
+                      </LoadingButton>
                     </>
                   ) : (
                     <>
