@@ -1,5 +1,13 @@
-import { Timestamp } from "firebase/firestore";
+import {
+  Timestamp,
+  doc,
+  addDoc,
+  getDoc,
+  writeBatch,
+  collection,
+} from "firebase/firestore";
 import { createContext, useEffect, useState } from "react";
+import { database } from "../data/Firebase";
 
 export const CartContext = createContext();
 
@@ -11,6 +19,11 @@ export const CartProvider = ({ children }) => {
   const [snackSuccess, setSnackSuccess] = useState(false);
   const [snackDeleteItemCart, setDeleteItemCart] = useState(false);
   const [orderLoading, setOrderLoading] = useState(false);
+  const [orderError, setOrderError] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [orderMessage, setOrderMessage] = useState("");
+  const [orderId, setOrderId] = useState("");
+
   const AddToCart = (item, quantity, actualLink) => {
     const itemAdded = { ...item, quantity, actualLink };
     const newCart = [...cart];
@@ -41,6 +54,8 @@ export const CartProvider = ({ children }) => {
     setSnackError(false);
     setSnackSuccess(false);
     setDeleteItemCart(false);
+    setOrderError(false);
+    setOrderSuccess(false);
   };
 
   const GetTotalPrice = () => {
@@ -56,11 +71,15 @@ export const CartProvider = ({ children }) => {
     cart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cart));
     setDeleteItemCart(true);
-    console.log(cart);
   };
 
-  const CreateOrder = async (uid, cart, totalPrice) => {
-    setOrderLoading(true);
+  const ClearCart = () => {
+    setCart([]);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  };
+
+  const CreateOrder = async (uid, totalPrice) => {
+    const batch = writeBatch(database);
     const order = {
       buyer: {
         userId: uid,
@@ -69,7 +88,33 @@ export const CartProvider = ({ children }) => {
       totalPrice: totalPrice,
       date: Timestamp.fromDate(new Date()),
     };
-    return order;
+    setOrderLoading(true);
+    for (let item of order.items) {
+      const docSnap = await getDoc(doc(database, "/Item", item.id));
+      const { stock } = docSnap.data();
+      const stockToUpdate = stock - item.quantity;
+      if (stockToUpdate < 0) {
+        setOrderLoading(false);
+        setOrderError(true);
+        setOrderMessage(`No hay stock suficiente del producto: ${item.name}`);
+      } else {
+        setOrderLoading(false);
+        setOrderError(false);
+        batch.update(doc(database, "/Item", item.id), { stock: stockToUpdate });
+        batch.commit();
+        await addDoc(collection(database, "/Order"), order)
+          .then((res) => {
+            setOrderLoading(false);
+            setOrderSuccess(true);
+            setOrderError(false);
+            setOrderId(res.id);
+            ClearCart();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    }
   };
 
   useEffect(() => {
@@ -86,6 +131,11 @@ export const CartProvider = ({ children }) => {
         DeleteItemCart,
         CreateOrder,
         CloseAllSnackbar,
+        orderLoading,
+        orderError,
+        orderSuccess,
+        orderMessage,
+        orderId,
         snackError,
         snackSuccess,
         snackDeleteItemCart,

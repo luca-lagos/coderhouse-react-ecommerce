@@ -42,7 +42,9 @@ export const ItemProvider = ({ children }) => {
     });
   }, []);
   return (
-    <ItemContext.Provider value={{ categories, items, getItemByKey }}>
+    <ItemContext.Provider
+      value={{ categories, items, getItemByKey }}
+    >
       {children}
     </ItemContext.Provider>
   );

@@ -13,7 +13,7 @@ import {
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useCart, useAuth } from "../../hooks/customHooks";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import TinyColor from "tinycolor2";
 
@@ -27,19 +27,19 @@ const CartContainer = () => {
     snackDeleteItemCart,
     CreateOrder,
     CloseAllSnackbar,
+    orderError,
+    orderSuccess,
+    orderMessage,
   } = useCart();
 
   const { userLogged } = useAuth();
 
-  console.log(userLogged.uid);
+  console.log(orderLoading);
 
   const HandleCreateOrder = (e) => {
     e.preventDefault();
     const totalPrice = GetTotalPrice();
-    console.log(totalPrice);
-    CreateOrder(userLogged.uid, cart, totalPrice).then((res) => {
-      console.log(res);
-    });
+    CreateOrder(userLogged?.uid, totalPrice);
   };
 
   useEffect(() => {
@@ -49,6 +49,11 @@ const CartContainer = () => {
 
   return (
     <>
+      {orderSuccess && (
+        <>
+          <Navigate to="/order-finished" />
+        </>
+      )}
       <Snackbar
         open={snackDeleteItemCart}
         onClose={CloseAllSnackbar}
@@ -60,6 +65,19 @@ const CartContainer = () => {
           sx={{ width: "100%" }}
         >
           Se ha eliminado el producto del carrito
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={orderError}
+        onClose={CloseAllSnackbar}
+        autoHideDuration={1500}
+      >
+        <Alert
+          onClose={CloseAllSnackbar}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {orderMessage}
         </Alert>
       </Snackbar>
       <Container

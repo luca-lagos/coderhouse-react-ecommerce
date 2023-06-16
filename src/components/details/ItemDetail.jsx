@@ -40,7 +40,8 @@ const ItemDetail = ({ item, actualLink }) => {
   };
 
   const HandleAddToCart = () => {
-    AddToCart(item[0], quantity, actualLink);
+    const {stock, ...newItem} = item[0];
+    AddToCart(newItem, quantity, actualLink);
   };
 
   return (
