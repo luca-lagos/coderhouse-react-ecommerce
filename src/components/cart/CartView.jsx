@@ -34,8 +34,6 @@ const CartContainer = () => {
 
   const { userLogged } = useAuth();
 
-  console.log(orderLoading);
-
   const HandleCreateOrder = (e) => {
     e.preventDefault();
     const totalPrice = GetTotalPrice();

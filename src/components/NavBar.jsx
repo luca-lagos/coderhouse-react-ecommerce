@@ -18,9 +18,9 @@ import { useCart, useAuth, useItem } from "../hooks/customHooks";
 import LoginIcon from "@mui/icons-material/Login";
 
 const loginSettings = [
-  { name: "My profile", link: "my-profile" },
-  { name: "My buying list", link: "buying-list" },
-  { name: "My favourites", link: "favourites" },
+  { name: "My profile", key: "my-profile" },
+  { name: "My orders", key: "my-orders" },
+  { name: "My favs", key: "my-favs" },
 ];
 
 const NavBar = () => {

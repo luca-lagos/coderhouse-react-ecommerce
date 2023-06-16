@@ -1,7 +1,16 @@
 import { useCart } from "../../../hooks/customHooks";
 import { useState, useEffect } from "react";
-import { Box, CircularProgress } from "@mui/material";
-
+import {
+  Container,
+  Box,
+  CircularProgress,
+  Typography,
+  Button,
+  Divider,
+} from "@mui/material";
+import MaterialLink from "@mui/material/Link";
+import { Link } from "react-router-dom";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 const OrderFinished = () => {
   const [loading, setLoading] = useState(false);
   const { orderId } = useCart();
@@ -14,6 +23,15 @@ const OrderFinished = () => {
   }, []);
   return (
     <>
+    <Container
+          maxWidth="xl"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            mt: { xs: 15, md: 22 },
+          }}
+        >
       {loading ? (
         <Box
           sx={{
@@ -27,10 +45,51 @@ const OrderFinished = () => {
           <CircularProgress size={60} color="success" />
         </Box>
       ) : (
-        <div style={{ marginTop: "300px" }}>
-          THE ORDER {orderId} WAS FINISHED
-        </div>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 5,
+              margin: 5,
+              width: 250
+            }}
+          >
+            <CheckCircleOutlineIcon sx={{ width: 200, height: "auto", mb: "-15px", color: "#66bb6a" }} />
+            <Typography variant="p" sx={{fontSize: 17, textAlign: 'center'}}>
+              The order has finished successfully. You can access this order
+              through this{" "}
+              <Link to={"/my-orders/" + orderId}>
+                <MaterialLink
+                  underline="hover"
+                  sx={{
+                    width: "100%",
+                    color: "#66bb6a",
+                  }}
+                >
+                  link.
+                </MaterialLink>
+              </Link>
+            </Typography>
+            <Divider sx={{ mt: "-15px", mb: "-15px", width: 100 }} />
+            <Link to={"/my-orders"}>
+              <Button
+                variant="contained"
+                sx={{
+                  width: 200,
+                  fontSize: 17,
+                  fontWeight: "400",
+                  backgroundColor: "#3c733f",
+                  "&:hover": { backgroundColor: "#224024" },
+                }}
+              >
+                GO TO ORDERS
+              </Button>
+            </Link>
+          </Box>
       )}
+      </Container>
     </>
   );
 };
