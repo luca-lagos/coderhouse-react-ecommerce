@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
 import TinyColor from "tinycolor2";
-import { useAuth, useItem } from "../../hooks/customHooks";
+import { useAuth, useItem } from "../../hooks/CustomHooks";
 
 const MenuWidget = ({ title, items, HandleClose }) => {
   const [modalOpen, setModalOpen] = useState(false);

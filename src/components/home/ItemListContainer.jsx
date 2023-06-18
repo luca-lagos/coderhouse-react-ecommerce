@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import ItemList from "./ItemList";
 import { useParams } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
-import { useItem } from "../../hooks/customHooks";
+import { useItem } from "../../hooks/CustomHooks";
 
 const ItemListContainer = () => {
   const [loading, setLoading] = useState(true);

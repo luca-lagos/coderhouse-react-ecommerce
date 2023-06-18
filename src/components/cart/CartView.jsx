@@ -11,7 +11,7 @@ import {
   Alert,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useCart, useAuth } from "../../hooks/customHooks";
+import { useCart, useAuth } from "../../hooks/CustomHooks";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Link, Navigate } from "react-router-dom";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";

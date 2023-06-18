@@ -20,7 +20,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import GoogleIcon from "@mui/icons-material/Google";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../hooks/customHooks";
+import { useAuth } from "../../hooks/CustomHooks";
 
 import { Link, Navigate } from "react-router-dom";
 

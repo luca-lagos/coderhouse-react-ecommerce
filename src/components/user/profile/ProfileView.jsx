@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../hooks/customHooks";
+import { useAuth } from "../../../hooks/CustomHooks";
 
 const ProfileView = () => {
   const [loading, setLoading] = useState(false);

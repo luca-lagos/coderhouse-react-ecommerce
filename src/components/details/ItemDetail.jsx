@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import ItemCount from "./ItemCount";
 import { useEffect } from "react";
-import { useCart } from "../../hooks/customHooks";
+import { useCart } from "../../hooks/CustomHooks";
 import TinyColor from "tinycolor2";
 
 const ItemDetail = ({ item, actualLink }) => {

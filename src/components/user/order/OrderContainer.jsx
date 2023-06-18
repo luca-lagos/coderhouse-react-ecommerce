@@ -7,7 +7,7 @@ import {
   Card,
   Button,
 } from "@mui/material";
-import { useAuth, useOrder } from "../../../hooks/customHooks";
+import { useAuth, useOrder } from "../../../hooks/CustomHooks";
 import { Link } from "react-router-dom";
 
 const OrderContainer = () => {

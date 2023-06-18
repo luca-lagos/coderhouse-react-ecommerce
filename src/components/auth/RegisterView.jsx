@@ -19,7 +19,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "@mui/lab/LoadingButton";
 import MaterialLink from "@mui/material/Link";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../hooks/customHooks";
+import { useAuth } from "../../hooks/CustomHooks";
 
 import { Link, Navigate } from "react-router-dom";
 

@@ -10,7 +10,7 @@ import {
   Chip,
   Tooltip,
 } from "@mui/material";
-import { useOrder } from "../../../hooks/customHooks";
+import { useOrder } from "../../../hooks/CustomHooks";
 import { useParams, Link } from "react-router-dom";
 import Tinycolor from "tinycolor2";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";

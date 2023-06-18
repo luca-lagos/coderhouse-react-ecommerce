@@ -7,7 +7,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { CardMedia, CardContent } from "@mui/material";
 import { useState } from "react";
 import TinyColor from "tinycolor2";
-import { useItem } from "../../../hooks/customHooks";
+import { useItem } from "../../../hooks/CustomHooks";
 
 const Item = ({ product }) => {
   const [overlay, setOverlay] = useState(false);

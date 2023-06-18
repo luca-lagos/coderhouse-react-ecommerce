@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ItemDetail from "../details/ItemDetail";
 import { Container, Typography, Box, CircularProgress } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useItem } from "../../hooks/customHooks";
+import { useItem } from "../../hooks/CustomHooks";
 
 const ItemDetailContainer = () => {
   const [loading, setLoading] = useState(true);

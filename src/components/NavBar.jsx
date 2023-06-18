@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/SwipeableDrawer";
 import { Tooltip } from "@mui/material";
-import { useCart, useAuth, useItem } from "../hooks/customHooks";
+import { useCart, useAuth, useItem } from "../hooks/CustomHooks";
 import LoginIcon from "@mui/icons-material/Login";
 
 const loginSettings = [

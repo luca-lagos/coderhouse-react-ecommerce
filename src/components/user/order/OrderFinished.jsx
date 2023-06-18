@@ -1,4 +1,4 @@
-import { useCart } from "../../../hooks/customHooks";
+import { useCart } from "../../../hooks/CustomHooks";
 import { useState, useEffect } from "react";
 import {
   Container,
