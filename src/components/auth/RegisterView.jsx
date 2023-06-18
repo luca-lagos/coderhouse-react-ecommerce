@@ -38,6 +38,7 @@ const RegisterView = () => {
   const [user, setUser] = useState({
     fullname: "",
     email: "",
+    phone: "",
     password: "",
     repeatPassword: "",
   });

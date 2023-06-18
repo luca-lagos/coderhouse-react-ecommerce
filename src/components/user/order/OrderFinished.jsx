@@ -11,6 +11,7 @@ import {
 import MaterialLink from "@mui/material/Link";
 import { Link } from "react-router-dom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+
 const OrderFinished = () => {
   const [loading, setLoading] = useState(false);
   const { orderId } = useCart();
@@ -23,28 +24,28 @@ const OrderFinished = () => {
   }, []);
   return (
     <>
-    <Container
-          maxWidth="xl"
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            mt: { xs: 15, md: 22 },
-          }}
-        >
-      {loading ? (
-        <Box
-          sx={{
-            width: "100%",
-            height: "400px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CircularProgress size={60} color="success" />
-        </Box>
-      ) : (
+      <Container
+        maxWidth="xl"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: { xs: 15, md: 22 },
+        }}
+      >
+        {loading ? (
+          <Box
+            sx={{
+              width: "100%",
+              height: "400px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress size={60} color="success" />
+          </Box>
+        ) : (
           <Box
             sx={{
               display: "flex",
@@ -53,11 +54,13 @@ const OrderFinished = () => {
               justifyContent: "center",
               gap: 5,
               margin: 5,
-              width: 250
+              width: 250,
             }}
           >
-            <CheckCircleOutlineIcon sx={{ width: 200, height: "auto", mb: "-15px", color: "#66bb6a" }} />
-            <Typography variant="p" sx={{fontSize: 17, textAlign: 'center'}}>
+            <CheckCircleOutlineIcon
+              sx={{ width: 200, height: "auto", mb: "-15px", color: "#66bb6a" }}
+            />
+            <Typography variant="p" sx={{ fontSize: 17, textAlign: "center" }}>
               The order has finished successfully. You can access this order
               through this{" "}
               <Link to={"/my-orders/" + orderId}>
@@ -88,7 +91,7 @@ const OrderFinished = () => {
               </Button>
             </Link>
           </Box>
-      )}
+        )}
       </Container>
     </>
   );

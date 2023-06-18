@@ -9,8 +9,9 @@ import RegisterView from "./components/auth/RegisterView";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { ItemProvider } from "./context/ItemContext";
+import { OrderProvider } from "./context/OrderContext";
 import OrderContainer from "./components/user/order/OrderContainer";
-import Order from "./components/user/order/Order";
+import OrderDetail from "./components/user/order/OrderDetail";
 import OrderFinished from "./components/user/order/OrderFinished";
 import ProfileView from "./components/user/profile/ProfileView";
 
@@ -20,24 +21,26 @@ const App = () => {
       <AuthProvider>
         <ItemProvider>
           <CartProvider>
-            <BrowserRouter>
-              <NavBar />
-              <Routes>
-                <Route path="/" element={<ItemListContainer />} />
-                <Route path="/:category" element={<ItemListContainer />} />
-                <Route
-                  path="/:category/:link"
-                  element={<ItemDetailContainer />}
-                />
-                <Route path="/cart" element={<CartView />} />
-                <Route path="/login" element={<LoginView />} />
-                <Route path="/register" element={<RegisterView />} />
-                <Route path="/my-orders" element={<OrderContainer />} />
-                <Route path="/my-orders/:id" element={<Order />} />
-                <Route path="/order-finished" element={<OrderFinished />} />
-                <Route path="/my-profile" element={<ProfileView />} />
-              </Routes>
-            </BrowserRouter>
+            <OrderProvider>
+              <BrowserRouter>
+                <NavBar />
+                <Routes>
+                  <Route path="/" element={<ItemListContainer />} />
+                  <Route path="/:category" element={<ItemListContainer />} />
+                  <Route
+                    path="/:category/:link"
+                    element={<ItemDetailContainer />}
+                  />
+                  <Route path="/cart" element={<CartView />} />
+                  <Route path="/login" element={<LoginView />} />
+                  <Route path="/register" element={<RegisterView />} />
+                  <Route path="/my-orders" element={<OrderContainer />} />
+                  <Route path="/my-orders/:id" element={<OrderDetail />} />
+                  <Route path="/order-finished" element={<OrderFinished />} />
+                  <Route path="/my-profile" element={<ProfileView />} />
+                </Routes>
+              </BrowserRouter>
+            </OrderProvider>
           </CartProvider>
         </ItemProvider>
       </AuthProvider>

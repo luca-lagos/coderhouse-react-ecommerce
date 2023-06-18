@@ -9,7 +9,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -42,8 +42,8 @@ export const AuthProvider = ({ children }) => {
           setDoc(doc(database, path, uid), {
             fullname: item.fullname,
             email: item.email,
+            phone: item.phone,
             password: item.password,
-            authProvider: "common",
           }).then(() => {
             setButtonLoading(false);
             setError(false);
@@ -125,6 +125,14 @@ export const AuthProvider = ({ children }) => {
     setLoginSuccess(false);
   };
 
+  const getUserById = async (id) => {
+    return await getDoc(doc(database, "/User", id));
+  };
+
+  const updateUser = async (uid, user) => {
+    return await updateDoc(doc(database, "/User", uid), user);
+  };
+
   const CloseAllSnackbar = () => {
     setError(false);
     setLoginSuccess(false);
@@ -153,6 +161,8 @@ export const AuthProvider = ({ children }) => {
         googleLogin,
         commonResetPassword,
         logOut,
+        getUserById,
+        updateUser,
       }}
     >
       {children}

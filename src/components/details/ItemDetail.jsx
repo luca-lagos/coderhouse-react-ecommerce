@@ -20,7 +20,6 @@ const ItemDetail = ({ item, actualLink }) => {
 
   const { cart, AddToCart, CloseAllSnackbar, snackSuccess, snackError } =
     useCart();
-  console.log(cart);
 
   useEffect(() => {
     setLoading(true);

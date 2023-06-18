@@ -81,11 +81,10 @@ export const CartProvider = ({ children }) => {
   const CreateOrder = async (uid, totalPrice) => {
     const batch = writeBatch(database);
     const order = {
-      buyer: {
-        userId: uid,
-      },
+      userId: uid,
       items: cart,
       totalPrice: totalPrice,
+      state: 'generated',
       date: Timestamp.fromDate(new Date()),
     };
     setOrderLoading(true);
