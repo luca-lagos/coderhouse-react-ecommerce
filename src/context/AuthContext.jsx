@@ -8,6 +8,10 @@ import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateEmail,
+  updatePassword,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
@@ -20,30 +24,52 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
   const [message, setMessage] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const commonRegister = async (path, item) => {
+
+  const commonRegister = async (path, user) => {
     setButtonLoading(true);
-    if (item.fullname == "") {
+    if (user.fullname == "") {
       setButtonLoading(false);
       setError(true);
-      setRegisterSuccess(false);
+      setUpdateSuccess(false);
       setMessage("The fullname input is empty");
-    } else if (item.password !== item.repeatPassword) {
+    } else if (user.phone == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The phone input is empty");
+    } else if (user.email == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The email input is empty");
+    } else if (user.password == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The password input is empty");
+    } else if (user.repeatPassword == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The repeat password input is empty");
+    } else if (user.password !== user.repeatPassword) {
       setButtonLoading(false);
       setError(true);
       setRegisterSuccess(false);
       setMessage("Passwords are not the same");
     } else {
-      await createUserWithEmailAndPassword(auth, item.email, item.password)
+      await createUserWithEmailAndPassword(auth, user.email, user.password)
         .then((res) => {
           const uid = res.user.uid;
           setDoc(doc(database, path, uid), {
-            fullname: item.fullname,
-            email: item.email,
-            phone: item.phone,
-            password: item.password,
+            fullname: user.fullname,
+            email: user.email,
+            phone: user.phone,
+            password: user.password,
           }).then(() => {
             setButtonLoading(false);
             setError(false);
@@ -129,14 +155,92 @@ export const AuthProvider = ({ children }) => {
     return await getDoc(doc(database, "/User", id));
   };
 
-  const updateUser = async (uid, user) => {
-    return await updateDoc(doc(database, "/User", uid), user);
+  const reauthenticate = (currentPassword) => {
+    let credential = EmailAuthProvider.credential(
+      userLogged.email,
+      currentPassword
+    );
+    return reauthenticateWithCredential(credential);
+  };
+
+  const updateUser = async (uid, user, currentPassword) => {
+    setButtonLoading(true);
+    if (user.fullname == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The fullname input is empty");
+    } else if (user.phone == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The phone input is empty");
+    } else if (user.email == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The email input is empty");
+    } else if (user.password == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The password input is empty");
+    } else if (user.repeatPassword == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The repeat password input is empty");
+    } else {
+      reauthenticate(currentPassword)
+        .then(() => {
+          const promises = [];
+          if (user.email == userLogged.email) {
+            setButtonLoading(false);
+            setError(true);
+            setUpdateSuccess(false);
+            setMessage("The email is the same as the current email");
+          } else if (user.password == user.repeatPassword) {
+            setButtonLoading(false);
+            setError(true);
+            setUpdateSuccess(false);
+            setMessage("The passwords are not the same");
+          } else {
+            promises.push(updateEmail(user.email));
+            promises.push(updatePassword(user.password));
+            Promise.all(promises).then(() => {
+              updateDoc(doc(database, "/User", uid), {
+                fullname: user.fullname,
+                email: user.email,
+                phone: user.phone,
+                password: user.password,
+              })
+                .then(() => {
+                  setButtonLoading(false);
+                  setError(false);
+                  setUpdateSuccess(true);
+                  setMessage("Profile has been updated successfully");
+                  setTimeout(() => setRegisterSuccess(false), 3000);
+                })
+                .catch((err) => {
+                  setButtonLoading(false);
+                  setError(true);
+                  setUpdateSuccess(false);
+                  setMessage(err.code);
+                });
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 
   const CloseAllSnackbar = () => {
     setError(false);
     setLoginSuccess(false);
     setRegisterSuccess(false);
+    setUpdateSuccess(false);
   };
 
   useEffect(() => {
@@ -151,6 +255,7 @@ export const AuthProvider = ({ children }) => {
         error,
         loginSuccess,
         registerSuccess,
+        updateSuccess,
         message,
         buttonLoading,
         googleLoading,

@@ -25,7 +25,7 @@ const ItemListContainer = () => {
       setTitle("All products");
       setProductList(items);
     }
-    setTimeout(() => setLoading(false), 2500);
+    setTimeout(() => setLoading(false), 3000);
   }, [categories, items, category]);
 
   return (

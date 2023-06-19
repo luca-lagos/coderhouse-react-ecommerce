@@ -14,6 +14,7 @@ import OrderContainer from "./components/user/order/OrderContainer";
 import OrderDetail from "./components/user/order/OrderDetail";
 import OrderFinished from "./components/user/order/OrderFinished";
 import ProfileView from "./components/user/profile/ProfileView";
+import ProfileForm from "./components/user/profile/ProfileForm";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
                   <Route path="/my-orders/:id" element={<OrderDetail />} />
                   <Route path="/order-finished" element={<OrderFinished />} />
                   <Route path="/my-profile" element={<ProfileView />} />
+                  <Route path="/update-profile" element={<ProfileForm />} />
                 </Routes>
               </BrowserRouter>
             </OrderProvider>
