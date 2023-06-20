@@ -20,7 +20,6 @@ import LoginIcon from "@mui/icons-material/Login";
 const loginSettings = [
   { name: "My profile", key: "my-profile" },
   { name: "My orders", key: "my-orders" },
-  { name: "My favs", key: "my-favs" },
 ];
 
 const NavBar = () => {

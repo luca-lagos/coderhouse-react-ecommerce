@@ -1,4 +1,4 @@
-import { useCart } from "../../../hooks/CustomHooks";
+import { useAuth, useCart } from "../../../hooks/CustomHooks";
 import { useState, useEffect } from "react";
 import {
   Container,
@@ -9,12 +9,13 @@ import {
   Divider,
 } from "@mui/material";
 import MaterialLink from "@mui/material/Link";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 const OrderFinished = () => {
   const [loading, setLoading] = useState(false);
   const { orderId } = useCart();
+  const { userLogged } = useAuth();
 
   useEffect(() => {
     setLoading(true);
@@ -24,6 +25,7 @@ const OrderFinished = () => {
   }, []);
   return (
     <>
+      {userLogged == null && <Navigate to={"/"} />}
       <Container
         maxWidth="xl"
         sx={{

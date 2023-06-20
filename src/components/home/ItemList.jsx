@@ -26,14 +26,17 @@ const ItemList = ({ productList }) => {
               alignItems: "center",
               justifyContent: "center",
               gap: 2,
-              color: "#111111",
-              marginTop: 20,
-              marginLeft: 1,
+              mt: 12,
             }}
           >
-            <SentimentVeryDissatisfiedIcon sx={{ fontSize: "150px" }} />
-            <Typography variant="h3" sx={{ fontSize: "28px", color: '#777777' }}>
-              Productos no encontrados
+            <SentimentVeryDissatisfiedIcon
+              sx={{ width: 150, height: "auto", color: "#66bb6a" }}
+            />
+            <Typography
+              variant="h3"
+              sx={{ fontSize: 20, fontWeight: "600", color: "#515151" }}
+            >
+              Products not found.
             </Typography>
           </Box>
         )}

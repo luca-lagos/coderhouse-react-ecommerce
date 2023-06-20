@@ -10,8 +10,8 @@ import {
   Chip,
   Tooltip,
 } from "@mui/material";
-import { useOrder } from "../../../hooks/CustomHooks";
-import { useParams, Link } from "react-router-dom";
+import { useAuth, useOrder } from "../../../hooks/CustomHooks";
+import { useParams, Link, Navigate } from "react-router-dom";
 import Tinycolor from "tinycolor2";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
@@ -19,6 +19,7 @@ const Order = () => {
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState([]);
   const { getOrderById } = useOrder();
+  const { userLogged } = useAuth();
   const id = useParams().id;
 
   const FormatDate = (date) => {
@@ -38,6 +39,7 @@ const Order = () => {
   }, [getOrderById, id]);
   return (
     <>
+      {userLogged == null && <Navigate to={"/"} />}
       <Container
         maxWidth="xl"
         sx={{

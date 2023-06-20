@@ -8,7 +8,8 @@ import {
   Button,
 } from "@mui/material";
 import { useAuth, useOrder } from "../../../hooks/CustomHooks";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
 const OrderContainer = () => {
   const [loading, setLoading] = useState(false);
@@ -36,6 +37,7 @@ const OrderContainer = () => {
   }, [getOrdersByUserId, uid]);
   return (
     <>
+      {userLogged == null && <Navigate to={"/"} />}
       <Container
         maxWidth="xl"
         sx={{
@@ -75,74 +77,97 @@ const OrderContainer = () => {
                 MY ORDERS
               </Typography>
             </Box>
-            <Card
-              sx={{
-                width: "95%",
-                p: 2,
-                display: "flex",
-                gap: 5,
-                flexDirection: "column",
-              }}
-            >
-              <Box
+            {orders != "" ? (
+              <Card
                 sx={{
-                  width: "auto",
-                  maxHeight: 500,
+                  width: "95%",
+                  p: 2,
                   display: "flex",
+                  gap: 5,
                   flexDirection: "column",
-                  gap: 2,
-                  overflowX: "hidden",
                 }}
               >
-                {orders.map((value) => (
-                  <Box
-                    key={value?.id}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      height: 40,
-                      p: 2,
-                      borderRadius: 1,
-                      backgroundColor: "#e9e9e9",
-                    }}
-                  >
-                    <Typography variant="p">
-                      ORDER:{" "}
-                      <Typography variant="p" sx={{ fontWeight: "bold" }}>
-                        {value?.id}
+                <Box
+                  sx={{
+                    width: "auto",
+                    maxHeight: 500,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                    overflowX: "hidden",
+                  }}
+                >
+                  {orders.map((value) => (
+                    <Box
+                      key={value?.id}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        height: 40,
+                        p: 2,
+                        borderRadius: 1,
+                        backgroundColor: "#e9e9e9",
+                      }}
+                    >
+                      <Typography variant="p">
+                        ORDER:{" "}
+                        <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                          {value?.id}
+                        </Typography>
                       </Typography>
-                    </Typography>
-                    <Typography variant="p">
-                      TOTAL:{" "}
-                      <Typography variant="p" sx={{ fontWeight: "bold" }}>
-                        ${value?.totalPrice}
+                      <Typography variant="p">
+                        TOTAL:{" "}
+                        <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                          ${value?.totalPrice}
+                        </Typography>
                       </Typography>
-                    </Typography>
-                    <Typography variant="p">
-                      DATE:{" "}
-                      <Typography variant="p" sx={{ fontWeight: "bold" }}>
-                        {FormatDate(value?.date)}
+                      <Typography variant="p">
+                        DATE:{" "}
+                        <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                          {FormatDate(value?.date)}
+                        </Typography>
                       </Typography>
-                    </Typography>
-                    <Link to={"/my-orders/" + value?.id}>
-                      <Button
-                        sx={{
-                          width: 150,
-                          fontSize: 17,
-                          fontWeight: "700",
-                          backgroundColor: "#3c733f",
-                          color: "white",
-                          "&:hover": { backgroundColor: "#224024" },
-                        }}
-                      >
-                        SEE ORDER
-                      </Button>
-                    </Link>
-                  </Box>
-                ))}
+                      <Link to={"/my-orders/" + value?.id}>
+                        <Button
+                          sx={{
+                            width: 150,
+                            fontSize: 17,
+                            fontWeight: "700",
+                            backgroundColor: "#3c733f",
+                            color: "white",
+                            "&:hover": { backgroundColor: "#224024" },
+                          }}
+                        >
+                          SEE ORDER
+                        </Button>
+                      </Link>
+                    </Box>
+                  ))}
+                </Box>
+              </Card>
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 2,
+                  mt: 12,
+                }}
+              >
+                <SentimentVeryDissatisfiedIcon
+                  sx={{ width: 150, height: "auto", color: "#66bb6a" }}
+                />
+                <Typography
+                  variant="h3"
+                  sx={{ fontSize: 20, fontWeight: "600", color: "#515151" }}
+                >
+                  Orders not found.
+                </Typography>
               </Box>
-            </Card>
+            )}
           </>
         )}
       </Container>

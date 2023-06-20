@@ -8,10 +8,9 @@ import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-  updateEmail,
   updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
@@ -27,6 +26,7 @@ export const AuthProvider = ({ children }) => {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [message, setMessage] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
   const commonRegister = async (path, user) => {
@@ -85,7 +85,6 @@ export const AuthProvider = ({ children }) => {
           setButtonLoading(false);
           setError(true);
           setRegisterSuccess(false);
-          console.log(err.code);
           switch (err.code) {
             case "auth/invalid-email":
               setMessage("Please, input a valid email");
@@ -114,6 +113,8 @@ export const AuthProvider = ({ children }) => {
         setButtonLoading(false);
         setError(false);
         setLoginSuccess(true);
+        setRegisterSuccess(false);
+        setUpdateSuccess(false);
         setTimeout(() => setLoginSuccess(false), 500);
       })
       .catch((err) => {
@@ -121,6 +122,23 @@ export const AuthProvider = ({ children }) => {
         setError(true);
         setLoginSuccess(false);
         console.log(err.code);
+        switch (err.code) {
+          case "auth/wrong-password":
+            setMessage("The password is incorrect");
+            break;
+          case "auth/user-not-found":
+            setMessage("The user is not registered");
+            break;
+          case "auth/missing-email":
+            setMessage("The email input is empty");
+            break;
+          case "auth/missing-password":
+            setMessage("The password input is empty");
+            break;
+          case "auth/email-already-in-use":
+            setMessage("Email already exists");
+            break;
+        }
       });
   };
 
@@ -155,83 +173,77 @@ export const AuthProvider = ({ children }) => {
     return await getDoc(doc(database, "/User", id));
   };
 
-  const reauthenticate = (currentPassword) => {
-    let credential = EmailAuthProvider.credential(
+  const reauthenticateUser = async (currentPassword) => {
+    const credential = EmailAuthProvider.credential(
       userLogged.email,
       currentPassword
     );
-    return reauthenticateWithCredential(credential);
+    return await reauthenticateWithCredential(userLogged, credential);
   };
 
   const updateUser = async (uid, user, currentPassword) => {
-    setButtonLoading(true);
+    setUpdateLoading(true);
     if (user.fullname == "") {
-      setButtonLoading(false);
+      setUpdateLoading(false);
       setError(true);
       setUpdateSuccess(false);
       setMessage("The fullname input is empty");
     } else if (user.phone == "") {
-      setButtonLoading(false);
+      setUpdateLoading(false);
       setError(true);
       setUpdateSuccess(false);
       setMessage("The phone input is empty");
     } else if (user.email == "") {
-      setButtonLoading(false);
+      setUpdateLoading(false);
       setError(true);
       setUpdateSuccess(false);
       setMessage("The email input is empty");
     } else if (user.password == "") {
-      setButtonLoading(false);
+      setUpdateLoading(false);
       setError(true);
       setUpdateSuccess(false);
       setMessage("The password input is empty");
     } else if (user.repeatPassword == "") {
-      setButtonLoading(false);
+      setUpdateLoading(false);
       setError(true);
       setUpdateSuccess(false);
       setMessage("The repeat password input is empty");
+    } else if (user.password != user.repeatPassword) {
+      setUpdateLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The passwords are not the same");
     } else {
-      reauthenticate(currentPassword)
+      await reauthenticateUser(currentPassword)
         .then(() => {
-          const promises = [];
-          if (user.email == userLogged.email) {
-            setButtonLoading(false);
-            setError(true);
-            setUpdateSuccess(false);
-            setMessage("The email is the same as the current email");
-          } else if (user.password == user.repeatPassword) {
-            setButtonLoading(false);
-            setError(true);
-            setUpdateSuccess(false);
-            setMessage("The passwords are not the same");
-          } else {
-            promises.push(updateEmail(user.email));
-            promises.push(updatePassword(user.password));
-            Promise.all(promises).then(() => {
+          updatePassword(userLogged, user.password)
+            .then(() => {
               updateDoc(doc(database, "/User", uid), {
                 fullname: user.fullname,
-                email: user.email,
                 phone: user.phone,
                 password: user.password,
               })
                 .then(() => {
-                  setButtonLoading(false);
+                  setUpdateLoading(false);
                   setError(false);
                   setUpdateSuccess(true);
                   setMessage("Profile has been updated successfully");
-                  setTimeout(() => setRegisterSuccess(false), 3000);
+                  logOut();
+                  setTimeout(() => setUpdateSuccess(false), 500);
                 })
                 .catch((err) => {
-                  setButtonLoading(false);
+                  setUpdateLoading(false);
                   setError(true);
                   setUpdateSuccess(false);
                   setMessage(err.code);
                 });
+            })
+            .catch((err) => {
+              console.log(err);
             });
-          }
         })
         .catch((err) => {
-          console.error(err);
+          console.log(err);
         });
     }
   };
@@ -258,6 +270,7 @@ export const AuthProvider = ({ children }) => {
         updateSuccess,
         message,
         buttonLoading,
+        updateLoading,
         googleLoading,
         userLogged,
         CloseAllSnackbar,

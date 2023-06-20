@@ -24,7 +24,6 @@ import { Link, Navigate } from "react-router-dom";
 
 const ProfileForm = () => {
   const [loading, setLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState([]);
   const [currentPassword, setCurrentPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
@@ -35,12 +34,11 @@ const ProfileForm = () => {
     error,
     updateSuccess,
     message,
-    buttonLoading,
+    updateLoading,
     CloseAllSnackbar,
   } = useAuth();
   const [user, setUser] = useState({
     fullname: "",
-    email: "",
     phone: "",
     password: "",
     repeatPassword: "",
@@ -65,33 +63,36 @@ const ProfileForm = () => {
     setUser({ ...user, [name]: value });
   };
 
-  const HandleUpdateUser = async (e) => {
+  const HandleUpdateUser = (e) => {
     e.preventDefault();
-    console.log(currentPassword);
-    await updateUser("/User", user, currentPassword);
+    updateUser(uid, user, currentPassword);
   };
 
   useEffect(() => {
     setLoading(true);
     getUserById(uid).then((res) => {
-      console.log(res);
       const result = {
         id: res.id,
         data: res.data(),
       };
-      setCurrentUser(result);
+      setUser({
+        fullname: result.data?.fullname,
+        phone: result.data?.phone,
+        password: result.data?.password,
+        repeatPassword: result.data?.password,
+      });
       setCurrentPassword(result.data?.password);
     });
-    setTimeout(() => setLoading(false), 1500);
+    setTimeout(() => setLoading(false), 2500);
   }, [getUserById, uid]);
   return (
     <>
+      {userLogged == null && <Navigate to={"/"} />}
       {updateSuccess && (
         <>
-          <Navigate to="/my-profile" />
+          <Navigate to="/login" />
         </>
       )}
-
       <Snackbar open={error} onClose={CloseAllSnackbar} autoHideDuration={1500}>
         <Alert
           onClose={CloseAllSnackbar}
@@ -162,8 +163,9 @@ const ProfileForm = () => {
                   name="fullname"
                   variant="filled"
                   color="success"
-                  defaultValue={currentUser.data?.fullname}
+                  value={(user && user?.fullname) || ""}
                   onChange={HandleUserChange}
+                  suppressContentEditableWarning={true}
                 />
                 <TextField
                   sx={{ width: "100%" }}
@@ -171,17 +173,9 @@ const ProfileForm = () => {
                   name="phone"
                   variant="filled"
                   color="success"
-                  defaultValue={currentUser.data?.phone}
+                  value={(user && user?.phone) || ""}
                   onChange={HandleUserChange}
-                />
-                <TextField
-                  sx={{ width: "100%" }}
-                  label="Email"
-                  name="email"
-                  variant="filled"
-                  color="success"
-                  defaultValue={currentUser.data?.email}
-                  onChange={HandleUserChange}
+                  suppressContentEditableWarning={true}
                 />
                 <FormControl sx={{ width: "100%" }} variant="filled">
                   <InputLabel color="success">Password</InputLabel>
@@ -189,8 +183,9 @@ const ProfileForm = () => {
                     name="password"
                     color="success"
                     type={showPassword ? "text" : "password"}
-                    defaultValue={currentUser.data?.password}
+                    value={(user && user?.password) || ""}
                     onChange={HandleUserChange}
+                    suppressContentEditableWarning={true}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -210,9 +205,9 @@ const ProfileForm = () => {
                     name="repeatPassword"
                     color="success"
                     type={showRepeatPassword ? "text" : "password"}
-                    defaultValue={currentUser.data?.password}
-                    contentEditable={true}
+                    value={(user && user?.repeatPassword) || ""}
                     onChange={HandleUserChange}
+                    suppressContentEditableWarning={true}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
@@ -235,7 +230,7 @@ const ProfileForm = () => {
                     <Button
                       variant="contained"
                       sx={{
-                        width: "50%",
+                        width: 150,
                         fontSize: 17,
                         fontWeight: "400",
                         backgroundColor: "#d32f2f",
@@ -249,7 +244,7 @@ const ProfileForm = () => {
                   <LoadingButton
                     variant="contained"
                     sx={{
-                      width: "50%",
+                      width: 150,
                       fontSize: 17,
                       fontWeight: "400",
                       backgroundColor: "#3c733f",
@@ -257,7 +252,7 @@ const ProfileForm = () => {
                       "&:hover": { backgroundColor: "#224024" },
                     }}
                     onClick={HandleUpdateUser}
-                    loading={buttonLoading}
+                    loading={updateLoading}
                     loadingPosition="end"
                   >
                     <span>UPDATE</span>

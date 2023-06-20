@@ -12,11 +12,15 @@ export const ItemProvider = ({ children }) => {
   };
 
   const getAllItems = async () => {
-    return await getDocs(collection(database, "/Item"));
+    const q = query(collection(database, "/Item"), where("stock", ">", 0));
+    return await getDocs(q);
   };
 
   const getItemByKey = async (key) => {
-    const q = query(collection(database, "/Item"), where("key", "==", key));
+    const q = query(
+      collection(database, "/Item"),
+      where("key", "==", key)
+    );
     return await getDocs(q);
   };
 
@@ -42,9 +46,7 @@ export const ItemProvider = ({ children }) => {
     });
   }, []);
   return (
-    <ItemContext.Provider
-      value={{ categories, items, getItemByKey }}
-    >
+    <ItemContext.Provider value={{ categories, items, getItemByKey }}>
       {children}
     </ItemContext.Provider>
   );

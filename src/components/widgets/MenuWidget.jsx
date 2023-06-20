@@ -15,7 +15,7 @@ import {
   Backdrop,
   Fade,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
 import TinyColor from "tinycolor2";
@@ -23,9 +23,9 @@ import { useAuth, useItem } from "../../hooks/CustomHooks";
 
 const MenuWidget = ({ title, items, HandleClose }) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [logout, setLogout] = useState(false);
   const { logOut, userLogged } = useAuth();
   const { categories } = useItem();
-
 
   const SetItemLink = (e) => {
     const result = categories.filter((c) => c.id === e.categoryId);
@@ -43,10 +43,15 @@ const MenuWidget = ({ title, items, HandleClose }) => {
   const LogOut = () => {
     logOut();
     HandleCloseModal();
+    setLogout(true);
+    setTimeout(() => {
+      setLogout(false);
+    }, 2000);
   };
 
   return (
     <>
+      {logout && <Navigate to={"/"} />}
       <Modal
         disableEnforceFocus
         open={modalOpen}

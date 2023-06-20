@@ -24,6 +24,8 @@ const ProfileView = () => {
 
   const uProviderData = userLogged?.providerData[0];
 
+  console.log(uProviderData);
+
   const HandleCloseSnackbar = () => {
     setSnackbar(false);
   };
@@ -58,7 +60,7 @@ const ProfileView = () => {
         </Snackbar>
       )}
       <Container
-        maxWidth="xl"
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -186,23 +188,28 @@ const ProfileView = () => {
                   </Box>
                 </Grid>
               </Grid>
-              <Divider sx={{ width: "40%", margin: "0 auto" }} />
-              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                <Link to={"/update-profile"}>
-                  <Button
-                    sx={{
-                      width: 200,
-                      fontSize: 17,
-                      fontWeight: "700",
-                      backgroundColor: "#3c733f",
-                      color: "white",
-                      "&:hover": { backgroundColor: "#224024" },
-                    }}
-                  >
-                    UPDATE PROFILE
-                  </Button>
-                </Link>
-              </Box>
+
+              {uProviderData?.displayName == null && (
+                <>
+                  <Divider sx={{ width: "40%", margin: "0 auto" }} />
+                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Link to={"/update-profile"}>
+                      <Button
+                        sx={{
+                          width: 200,
+                          fontSize: 17,
+                          fontWeight: "700",
+                          backgroundColor: "#3c733f",
+                          color: "white",
+                          "&:hover": { backgroundColor: "#224024" },
+                        }}
+                      >
+                        UPDATE PROFILE
+                      </Button>
+                    </Link>
+                  </Box>
+                </>
+              )}
             </Card>
           </>
         )}

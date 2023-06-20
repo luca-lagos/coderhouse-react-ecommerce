@@ -26,4 +26,4 @@ export const useOrder = () => {
   const context = useContext(OrderContext);
   if (!context) throw new Error("There is no Order Provider available");
   return context;
-}
+};

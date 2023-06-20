@@ -151,6 +151,14 @@ const RegisterView = () => {
                 />
                 <TextField
                   sx={{ width: "100%" }}
+                  label="Phone"
+                  name="phone"
+                  variant="filled"
+                  color="success"
+                  onChange={HandleUserChange}
+                />
+                <TextField
+                  sx={{ width: "100%" }}
                   label="Email"
                   name="email"
                   variant="filled"

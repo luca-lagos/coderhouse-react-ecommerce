@@ -48,12 +48,7 @@ const Item = ({ product }) => {
             />
           </Box>
         </Link>
-        <CardMedia
-          component="img"
-          height="194"
-          image={product.image}
-          alt=""
-        />
+        <CardMedia component="img" height="194" image={product.image} alt="" />
         <CardContent sx={{ textAlign: "center" }}>
           <Typography sx={{ color: "#111111", fontSize: "20px", mb: 1 }}>
             {product.name}

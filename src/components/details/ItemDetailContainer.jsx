@@ -51,8 +51,8 @@ const ItemDetailContainer = () => {
           </Box>
         ) : (
           <Typography>
-            <ItemDetail item={item} actualLink={actualLink} />
-          </Typography>
+                <ItemDetail item={item} actualLink={actualLink} />
+              </Typography>
         )}
       </Container>
     </>
