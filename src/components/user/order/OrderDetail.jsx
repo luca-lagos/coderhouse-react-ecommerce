@@ -170,7 +170,7 @@ const Order = () => {
                         </Box>
                       </Link>
                       <Typography variant="h3" sx={{ fontSize: 20 }}>
-                        CANT: {value.quantity}
+                        QUAN: {value.quantity}
                       </Typography>
                       <Typography
                         variant="h3"

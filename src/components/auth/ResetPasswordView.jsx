@@ -99,7 +99,8 @@ const ResetPasswordView = () => {
                 p: 4,
                 display: "flex",
                 gap: 5,
-                maxWidth: { xs: 350, md: 1200 },
+                maxWidth: {xs: "auto", md: 1200},
+                width: { xs: "85%", md: "auto" },
                 flexDirection: "column",
               }}
             >
@@ -109,7 +110,7 @@ const ResetPasswordView = () => {
                   fontSize: 15,
                   fontStyle: "italic",
                   color: "#272727",
-                  width: 400,
+                  width: {xs: "100%", md: 400},
                   textAlign: "center",
                   margin: "0 auto",
                 }}
@@ -119,7 +120,7 @@ const ResetPasswordView = () => {
               </Typography>
               <Box
                 sx={{
-                  width: 400,
+                  width: {xs: "100%", md: 400},
                   display: "flex",
                   flexDirection: "column",
                   gap: 3,

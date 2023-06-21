@@ -96,7 +96,7 @@ const NavBar = () => {
               }}
             >
               <Link to="/">
-                <img style={{ width: "50px" }} src="/images/react-icon.png" />
+                <img style={{ width: "40px" }} src="/images/m-logo.png" />
               </Link>
             </Typography>
             <Box sx={{ flexGrow: 0, mr: 2 }}>

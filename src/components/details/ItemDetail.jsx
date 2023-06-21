@@ -107,6 +107,8 @@ const ItemDetail = ({ item, actualLink }) => {
                 gap: 5,
                 maxWidth: { xs: 350, md: 1200 },
                 flexDirection: { xs: "column", md: "row" },
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <Box
@@ -114,17 +116,23 @@ const ItemDetail = ({ item, actualLink }) => {
                   display: { xs: "flex", md: "none" },
                   width: { xs: 350, md: "auto" },
                   mb: { xs: "-25px" },
+                  justifyContent: { xs: "center", md: "flex-start" },
                 }}
               >
-                  <Typography
-                    component={"h1"}
-                    sx={{ fontSize: 45, fontWeight: "bold" }}
-                  >
-                    {item[0]?.name}
-                  </Typography>
-                </Box>
-              <Box sx={{ width: { xs: 350, md: "auto" } }}>
-                <img src={item[0]?.image} alt="" style={{ width: "100%" }} />
+                <Typography
+                  component={"h1"}
+                  sx={{ fontSize: { xs: 30, md: 45 }, fontWeight: "bold" }}
+                >
+                  {item[0]?.name}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center"
+                }}
+              >
+                <img src={item[0]?.image} alt="" style={{width: 300, height: "auto", objectFit: "cover"}}/>
               </Box>
               <Box
                 sx={{
@@ -136,16 +144,16 @@ const ItemDetail = ({ item, actualLink }) => {
                   width: { xs: 350, md: "auto" },
                 }}
               >
-                  <Typography
-                    component={"h1"}
-                    sx={{
-                      display: { xs: "none", md: "flex" },
-                      fontSize: 45,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {item[0]?.name}
-                  </Typography>
+                <Typography
+                  component={"h1"}
+                  sx={{
+                    display: { xs: "none", md: "flex" },
+                    fontSize: 45,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {item[0]?.name}
+                </Typography>
                 <Box
                   sx={{
                     display: "flex",
@@ -184,8 +192,8 @@ const ItemDetail = ({ item, actualLink }) => {
                 <Typography
                   component={"p"}
                   sx={{
-                    maxWidth: { xs: 350, md: 750 },
-                    mt: 1,
+                    maxWidth: { xs: 300, md: 750 },
+                    mt: {xs: "auto", md: 1},
                     textAlign: { xs: "center", md: "left" },
                   }}
                 >

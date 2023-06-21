@@ -122,6 +122,8 @@ const CartContainer = () => {
                 sx={{
                   width: "95%",
                   p: 2,
+                  pl: { xs: 4, md: "auto" },
+                  pr: { xs: 4, md: "auto" },
                   display: "flex",
                   gap: 5,
                   flexDirection: "column",
@@ -132,7 +134,7 @@ const CartContainer = () => {
                     width: "auto",
                     maxHeight: 500,
                     overflowX: "hidden",
-                    pr: 2,
+                    pr: { xs: "auto", md: 2 },
                   }}
                 >
                   {cart.map((value, index) => (
@@ -146,12 +148,19 @@ const CartContainer = () => {
                         }}
                       >
                         <Link to={"/" + value.actualLink}>
-                          <Box sx={{ display: "flex", gap: 3 }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              flexDirection: { xs: "column", md: "row" },
+                              gap: { xs: 1, md: 3 },
+                              alignItems: "center",
+                            }}
+                          >
                             <img
                               src={value.image}
                               style={{
-                                width: 100,
-                                height: 100,
+                                width: 130,
+                                height: 130,
                                 objectFit: "cover",
                                 borderRadius: 5,
                               }}
@@ -161,17 +170,30 @@ const CartContainer = () => {
                                 display: "flex",
                                 flexDirection: "column",
                                 justifyContent: "center",
-                                gap: 2,
+                                gap: { xs: 1, md: 2 },
                                 color: "#272727",
                               }}
                             >
-                              <Typography variant="h3" sx={{ fontSize: 22 }}>
+                              <Typography
+                                variant="h3"
+                                sx={{ fontSize: { xs: 17, md: 22 } }}
+                              >
                                 {value.name}
                               </Typography>
-                              <Box sx={{ display: "flex", gap: 2 }}>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  gap: { xs: 1, md: 2 },
+                                  justifyContent: {
+                                    xs: "center",
+                                    md: "flex-start",
+                                  },
+                                }}
+                              >
                                 <Chip
                                   sx={{
                                     fontWeight: 600,
+                                    fontSize: { xs: 10, md: 12 },
                                     backgroundColor: value.color,
                                     color: TinyColor(value.color).isDark()
                                       ? "white"
@@ -180,7 +202,10 @@ const CartContainer = () => {
                                   label={value.color}
                                 />
                                 <Chip
-                                  sx={{ fontWeight: 600 }}
+                                  sx={{
+                                    fontWeight: 600,
+                                    fontSize: { xs: 10, md: 12 },
+                                  }}
                                   label={
                                     "SIZE: " + value.size === "Small"
                                       ? "S"
@@ -192,17 +217,60 @@ const CartContainer = () => {
                                   }
                                 />
                               </Box>
+                              <Box
+                                sx={{
+                                  display: { xs: "flex", md: "none" },
+                                  gap: { xs: 1, md: 2 },
+                                  justifyContent: {
+                                    xs: "center",
+                                    md: "flex-start",
+                                  },
+                                }}
+                              >
+                                <Chip
+                                  sx={{
+                                    fontWeight: 600,
+                                    fontSize: { xs: 10, md: 12 },
+                                    backgroundColor: "#272727",
+                                    color: TinyColor(value.color).isDark()
+                                      ? "white"
+                                      : "#272727",
+                                  }}
+                                  label={"QUAN: " + value.quantity}
+                                />
+                                <Chip
+                                  sx={{
+                                    fontWeight: 600,
+                                    fontSize: { xs: 10, md: 12 },
+                                    backgroundColor: "#66bb6a",
+                                    color: TinyColor(value.price).isDark()
+                                      ? "white"
+                                      : "#272727",
+                                  }}
+                                  label={"$" + value.price}
+                                />
+                              </Box>
                             </Box>
                           </Box>
                         </Link>
-                        <Typography variant="h3" sx={{ fontSize: 20 }}>
-                          CANT: {value.quantity}
+                        <Typography
+                          variant="h3"
+                          sx={{
+                            display: { xs: "none", md: "flex" },
+                            fontSize: 20,
+                          }}
+                        >
+                          QUAN: {value.quantity}
                         </Typography>
                         <Typography
                           variant="h3"
-                          sx={{ fontSize: 20, color: "#66bb6a" }}
+                          sx={{
+                            display: { xs: "none", md: "flex" },
+                            fontSize: 20,
+                            color: "#66bb6a",
+                          }}
                         >
-                          ${Math.round(value.price * value.quantity)}
+                          PRICE ${Math.round(value.price * value.quantity)}
                         </Typography>
                         <Tooltip title="Delete from cart">
                           <IconButton
@@ -213,31 +281,37 @@ const CartContainer = () => {
                             }}
                           >
                             <DeleteForeverIcon
-                              sx={{ width: 35, height: "auto" }}
+                              sx={{ width: { xs: 50, md: 35 }, height: "auto" }}
                             />
                           </IconButton>
                         </Tooltip>
                       </Box>
                       <br />
-                      <Divider sx={{ mb: 2 }} />
+                      <Divider
+                        sx={{ width: { xs: "95%", md: "100%" }, margin: {xs: "0 auto 20px auto", md: "auto auto 20px auto"} }}
+                      />
                     </>
                   ))}
                 </Box>
                 <Box
                   sx={{
                     display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                     gap: 4,
                     pl: { xs: 0, md: 3 },
                     pr: { xs: 0, md: 3 },
                     mb: 2,
-                    alignItems: "center",
                   }}
                 >
                   {userLogged != null ? (
                     <>
                       <Typography
                         variant="h4"
-                        sx={{ width: "35%", fontSize: 25 }}
+                        sx={{
+                          width: { xs: "50%", md: "35%" },
+                          fontSize: { xs: 20, md: 25 },
+                        }}
                       >
                         TOTAL: ${GetTotalPrice()}
                       </Typography>
@@ -277,11 +351,17 @@ const CartContainer = () => {
                     <>
                       <Typography
                         variant="h4"
-                        sx={{ width: "85%", fontSize: 25 }}
+                        sx={{
+                          width: { xs: "50%", md: "85%" },
+                          fontSize: { xs: 20, md: 25 },
+                        }}
                       >
                         TOTAL: ${GetTotalPrice()}
                       </Typography>
-                      <Link to={"/login"} style={{ width: "15%" }}>
+                      <Link
+                        to={"/login"}
+                        style={{ width: { xs: "50%", md: "15%" } }}
+                      >
                         <Button
                           variant="contained"
                           sx={{

@@ -151,13 +151,14 @@ const LoginView = () => {
                 p: 4,
                 display: "flex",
                 gap: 5,
-                maxWidth: { xs: 350, md: 1200 },
+                maxWidth: {xs: "auto", md: 1200},
+                width: { xs: "85%", md: "auto" },
                 flexDirection: "column",
               }}
             >
               <Box
                 sx={{
-                  width: 400,
+                  width: {xs: "100%", md: 400},
                   display: "flex",
                   flexDirection: "column",
                   gap: 3,

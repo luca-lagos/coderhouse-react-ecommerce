@@ -109,7 +109,7 @@ const MenuWidget = ({ title, items, HandleClose }) => {
           role="presentation"
           sx={{ width: { xs: 250, md: 300 }, height: "100%" }}
         >
-          <Typography sx={{ p: 3, height: "25px" }}>{title}</Typography>
+          <Typography sx={{ p: 3}}>{title}</Typography>
           <Divider />
           {items != "" ? (
             <Box>
