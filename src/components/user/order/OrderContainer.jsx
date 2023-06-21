@@ -10,6 +10,7 @@ import {
 import { useAuth, useOrder } from "../../../hooks/CustomHooks";
 import { Link, Navigate } from "react-router-dom";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const OrderContainer = () => {
   const [loading, setLoading] = useState(false);
@@ -104,7 +105,7 @@ const OrderContainer = () => {
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        height: 40,
+                        height: 80,
                         p: 2,
                         borderRadius: 1,
                         backgroundColor: "#e9e9e9",
@@ -112,17 +113,17 @@ const OrderContainer = () => {
                     >
                       <Typography variant="p">
                         ORDER:{" "}
-                        <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                        <Typography variant="p" sx={{ fontWeight: "bold", fontSize: {xs: 13, md: "auto"} }}>
                           {value?.id}
                         </Typography>
                       </Typography>
-                      <Typography variant="p">
+                      <Typography variant="p" sx={{display: {xs: "none", md: "flex"}}}>
                         TOTAL:{" "}
                         <Typography variant="p" sx={{ fontWeight: "bold" }}>
                           ${value?.totalPrice}
                         </Typography>
                       </Typography>
-                      <Typography variant="p">
+                      <Typography variant="p" sx={{display: {xs: "none", md: "flex"}}}>
                         DATE:{" "}
                         <Typography variant="p" sx={{ fontWeight: "bold" }}>
                           {FormatDate(value?.date)}
@@ -131,6 +132,7 @@ const OrderContainer = () => {
                       <Link to={"/my-orders/" + value?.id}>
                         <Button
                           sx={{
+                            display: {xs: "none", md: "flex"},
                             width: 150,
                             fontSize: 17,
                             fontWeight: "700",
@@ -140,6 +142,19 @@ const OrderContainer = () => {
                           }}
                         >
                           SEE ORDER
+                        </Button>
+                        <Button
+                          sx={{
+                            display: {xs: "flex", md: "none"},
+                            width: "auto",
+                            fontSize: 17,
+                            fontWeight: "700",
+                            backgroundColor: "#3c733f",
+                            color: "white",
+                            "&:hover": { backgroundColor: "#224024" },
+                          }}
+                        >
+                          <VisibilityIcon/>
                         </Button>
                       </Link>
                     </Box>

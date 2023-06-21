@@ -122,8 +122,8 @@ const CartContainer = () => {
                 sx={{
                   width: "95%",
                   p: 2,
-                  pl: { xs: 4, md: "auto" },
-                  pr: { xs: 4, md: "auto" },
+                  pl: { xs: 2, md: "auto" },
+                  pr: { xs: 2, md: "auto" },
                   display: "flex",
                   gap: 5,
                   flexDirection: "column",
@@ -231,10 +231,8 @@ const CartContainer = () => {
                                   sx={{
                                     fontWeight: 600,
                                     fontSize: { xs: 10, md: 12 },
-                                    backgroundColor: "#272727",
-                                    color: TinyColor(value.color).isDark()
-                                      ? "white"
-                                      : "#272727",
+                                    backgroundColor: "#224024",
+                                    color: "white",
                                   }}
                                   label={"QUAN: " + value.quantity}
                                 />
@@ -288,7 +286,13 @@ const CartContainer = () => {
                       </Box>
                       <br />
                       <Divider
-                        sx={{ width: { xs: "95%", md: "100%" }, margin: {xs: "0 auto 20px auto", md: "auto auto 20px auto"} }}
+                        sx={{
+                          width: { xs: "95%", md: "100%" },
+                          margin: {
+                            xs: "0 auto 20px auto",
+                            md: "auto auto 20px auto",
+                          },
+                        }}
                       />
                     </>
                   ))}
@@ -296,6 +300,7 @@ const CartContainer = () => {
                 <Box
                   sx={{
                     display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
                     justifyContent: "space-between",
                     alignItems: "center",
                     gap: 4,
@@ -307,45 +312,65 @@ const CartContainer = () => {
                   {userLogged != null ? (
                     <>
                       <Typography
-                        variant="h4"
+                        variant="div"
                         sx={{
-                          width: { xs: "50%", md: "35%" },
-                          fontSize: { xs: 20, md: 25 },
-                        }}
-                      >
-                        TOTAL: ${GetTotalPrice()}
-                      </Typography>
-
-                      <Typography
-                        variant="h3"
-                        sx={{
-                          width: "50%",
+                          display: { xs: "flex", md: "none" },
+                          width: "100%",
                           fontSize: 18,
                           fontStyle: "italic",
-                          display: "flex",
                           alignItems: "center",
+                          justifyContent: "center",
+                          flexDirection: "column",
                           gap: 1,
                         }}
                       >
-                        Buy as{" "}
-                        <p style={{ color: "#66bb6a" }}>{userLogged.email}</p>
+                        Buy as
+                        <strong style={{ color: "#66bb6a", fontSize: 16}}>{userLogged.email}</strong>
                       </Typography>
-                      <LoadingButton
-                        variant="contained"
-                        sx={{
-                          width: "15%",
-                          fontSize: 20,
-                          fontWeight: "bold",
-                          backgroundColor: "#3c733f",
-                          mb: { xs: 2, md: 0 },
-                          "&:hover": { backgroundColor: "#224024" },
-                        }}
-                        onClick={HandleCreateOrder}
-                        loading={orderLoading}
-                        loadingPosition="end"
-                      >
-                        BUY
-                      </LoadingButton>
+                      <Box sx={{ width: "100%", display: "flex", justifyContent: "space-between" }}>
+                        <Typography
+                          variant="h4"
+                          sx={{
+                            width: { xs: "50%", md: "35%" },
+                            fontSize: { xs: 20, md: 25 },
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          TOTAL: ${GetTotalPrice()}
+                        </Typography>
+
+                        <Typography
+                          variant="h3"
+                          sx={{
+                            display: { xs: "none", md: "flex" },
+                            width: "80%",
+                            fontSize: 18,
+                            fontStyle: "italic",
+                            alignItems: "center",
+                            gap: 1,
+                          }}
+                        >
+                          Buy as{" "}
+                          <strong style={{ color: "#66bb6a" }}>{userLogged.email}</strong>
+                        </Typography>
+                        <LoadingButton
+                          variant="contained"
+                          sx={{
+                            width: "15%",
+                            fontSize: 20,
+                            fontWeight: "bold",
+                            backgroundColor: "#3c733f",
+                            mb: { xs: 2, md: 0 },
+                            "&:hover": { backgroundColor: "#224024" },
+                          }}
+                          onClick={HandleCreateOrder}
+                          loading={orderLoading}
+                          loadingPosition="end"
+                        >
+                          BUY
+                        </LoadingButton>
+                      </Box>
                     </>
                   ) : (
                     <>

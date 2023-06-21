@@ -64,13 +64,20 @@ const Order = () => {
           </Box>
         ) : (
           <>
-            <Box sx={{ display: "flex", gap: 1 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                alignItems: "center",
+                gap: { xs: 0, md: 1 },
+              }}
+            >
               <Typography
                 component="h2"
                 sx={{
-                  fontSize: "28px",
+                  fontSize: {xs: 20, md: 28},
                   fontWeight: "bold",
-                  mb: 4,
+                  mb: { xs: 1, md: 4 },
                   color: "#66bb6a",
                   textDecoration: "underline",
                   textTransform: "uppercase",
@@ -81,7 +88,7 @@ const Order = () => {
               <Typography
                 component="h2"
                 sx={{
-                  fontSize: "28px",
+                  fontSize: {xs: 20, md: 28},
                   fontWeight: "bold",
                   mb: 4,
                   color: "#272727",
@@ -94,8 +101,10 @@ const Order = () => {
             </Box>
             <Card
               sx={{
-                width: "95%",
+                width: { xs: "75%", md: "95%" },
                 p: 2,
+                pl: { xs: 2, md: "auto" },
+                pr: { xs: 2, md: "auto" },
                 display: "flex",
                 gap: 5,
                 flexDirection: "column",
@@ -106,7 +115,7 @@ const Order = () => {
                   width: "auto",
                   maxHeight: 500,
                   overflowX: "hidden",
-                  pr: 2,
+                  pr: { xs: "auto", md: 2 },
                 }}
               >
                 {order.data?.items.map((value, index) => (
@@ -115,17 +124,24 @@ const Order = () => {
                       key={index}
                       display={{
                         display: "flex",
-                        justifyContent: "space-between",
+                        justifyContent: "center",
                         alignItems: "center",
                       }}
                     >
                       <Link to={"/" + value.actualLink}>
-                        <Box sx={{ display: "flex", gap: 3 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: { xs: "column", md: "row" },
+                            gap: { xs: 1, md: 3 },
+                            alignItems: "center",
+                          }}
+                        >
                           <img
                             src={value.image}
                             style={{
-                              width: 100,
-                              height: 100,
+                              width: 130,
+                              height: 130,
                               objectFit: "cover",
                               borderRadius: 5,
                             }}
@@ -135,17 +151,30 @@ const Order = () => {
                               display: "flex",
                               flexDirection: "column",
                               justifyContent: "center",
-                              gap: 2,
+                              gap: { xs: 1, md: 2 },
                               color: "#272727",
                             }}
                           >
-                            <Typography variant="h3" sx={{ fontSize: 22 }}>
+                            <Typography
+                              variant="h3"
+                              sx={{ fontSize: { xs: 17, md: 22 } }}
+                            >
                               {value.name}
                             </Typography>
-                            <Box sx={{ display: "flex", gap: 2 }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                gap: { xs: 1, md: 2 },
+                                justifyContent: {
+                                  xs: "center",
+                                  md: "flex-start",
+                                },
+                              }}
+                            >
                               <Chip
                                 sx={{
                                   fontWeight: 600,
+                                  fontSize: { xs: 10, md: 12 },
                                   backgroundColor: value.color,
                                   color: Tinycolor(value.color).isDark()
                                     ? "white"
@@ -154,7 +183,10 @@ const Order = () => {
                                 label={value.color}
                               />
                               <Chip
-                                sx={{ fontWeight: 600 }}
+                                sx={{
+                                  fontWeight: 600,
+                                  fontSize: { xs: 10, md: 12 },
+                                }}
                                 label={
                                   "SIZE: " + value.size === "Small"
                                     ? "S"
@@ -166,47 +198,144 @@ const Order = () => {
                                 }
                               />
                             </Box>
+                            <Box
+                              sx={{
+                                display: { xs: "flex", md: "none" },
+                                gap: { xs: 1, md: 2 },
+                                justifyContent: {
+                                  xs: "center",
+                                  md: "flex-start",
+                                },
+                              }}
+                            >
+                              <Chip
+                                sx={{
+                                  fontWeight: 600,
+                                  fontSize: { xs: 10, md: 12 },
+                                  backgroundColor: "#224024",
+                                  color: "white",
+                                }}
+                                label={"QUAN: " + value.quantity}
+                              />
+                              <Chip
+                                sx={{
+                                  fontWeight: 600,
+                                  fontSize: { xs: 10, md: 12 },
+                                  backgroundColor: "#66bb6a",
+                                  color: Tinycolor(value.price).isDark()
+                                    ? "white"
+                                    : "#272727",
+                                }}
+                                label={"$" + value.price}
+                              />
+                            </Box>
                           </Box>
                         </Box>
                       </Link>
-                      <Typography variant="h3" sx={{ fontSize: 20 }}>
+                      <Typography
+                        variant="h3"
+                        sx={{
+                          display: { xs: "none", md: "flex" },
+                          fontSize: 20,
+                        }}
+                      >
                         QUAN: {value.quantity}
                       </Typography>
                       <Typography
                         variant="h3"
-                        sx={{ fontSize: 20, color: "#66bb6a" }}
+                        sx={{
+                          display: { xs: "none", md: "flex" },
+                          fontSize: 20,
+                          color: "#66bb6a",
+                        }}
                       >
                         ${Math.round(value.price * value.quantity)}
                       </Typography>
                     </Box>
                     <br />
-                    <Divider sx={{ mb: 2 }} />
+                    <Divider
+                      sx={{
+                        width: { xs: "95%", md: "100%" },
+                        margin: {
+                          xs: "0 auto 20px auto",
+                          md: "auto auto 20px auto",
+                        },
+                      }}
+                    />
                   </>
                 ))}
               </Box>
               <Box
                 sx={{
                   display: "flex",
+                  flexDirection: { xs: "column", md: "row" },
                   justifyContent: "space-between",
                   alignItems: "center",
+                  gap: 4,
                   pl: { xs: 0, md: 3 },
                   pr: { xs: 0, md: 3 },
                   mb: 2,
                 }}
               >
-                <Typography variant="h5" sx={{ fontSize: 25 }}>
-                  TOTAL: ${order.data?.totalPrice}
-                </Typography>
-                <Typography variant="h5" sx={{ fontSize: 25 }}>
-                  DATE: {FormatDate(order.data?.date)}
-                </Typography>
-                <Tooltip title="Go back">
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "center",
+                    gap: 4,
+                  }}
+                >
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      fontSize: { xs: 20, md: 25 },
+                      display: "flex",
+                      alignItems: "center",
+                      margin: "0 auto",
+                      textAlign: "center",
+                    }}
+                  >
+                    TOTAL: ${order.data?.totalPrice}
+                  </Typography>
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      fontSize: { xs: 20, md: 25 },
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    DATE: {FormatDate(order.data?.date)}
+                  </Typography>
+                  <Tooltip title="Go back">
+                    <Link to={"/my-orders"}>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          display: { xs: "none", md: "flex" },
+                          width: 50,
+                          height: "auto",
+                          backgroundColor: "#d32f2f",
+                          color: "white",
+                          borderRadius: 5,
+                          fontSize: 20,
+                          fontWeight: "bold",
+                          mb: { xs: 2, md: 0 },
+                          "&:hover": { backgroundColor: "#8c2222" },
+                        }}
+                      >
+                        <ArrowBackIcon />
+                      </Button>
+                    </Link>
+                  </Tooltip>
+                </Box>
+                <Tooltip title={"Go back"}>
                   <Link to={"/my-orders"}>
                     <Button
                       variant="contained"
                       sx={{
-                        width: 50,
-                        height: "auto",
+                        display: { xs: "flex", md: "none" },
+                        width: 150,
+                        height: 50,
                         backgroundColor: "#d32f2f",
                         color: "white",
                         borderRadius: 5,

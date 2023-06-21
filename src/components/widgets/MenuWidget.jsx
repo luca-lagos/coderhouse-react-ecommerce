@@ -116,7 +116,7 @@ const MenuWidget = ({ title, items, HandleClose }) => {
               <List
                 sx={{
                   width: { xs: 250, md: 300 },
-                  maxHeight: { xs: 700, md: 700 },
+                  maxHeight: { xs: 550, md: 700 },
                   overflowX: "hidden",
                 }}
               >

@@ -109,7 +109,7 @@ const ProfileView = () => {
               }}
             >
               <Grid container spacing={{ xs: 1, md: 2 }}>
-                <Grid item md={6}>
+                <Grid item xs={12} md={6}>
                   <Box
                     sx={{
                       display: "flex",
@@ -123,7 +123,7 @@ const ProfileView = () => {
                   >
                     <Typography variant="p">
                       FULLNAME:{" "}
-                      <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                      <Typography variant="p" sx={{ fontWeight: "bold", fontSize: {xs: 15, md: "auto"} }}>
                         {uProviderData?.displayName == null
                           ? user.data?.fullname
                           : uProviderData?.displayName}
@@ -133,6 +133,7 @@ const ProfileView = () => {
                 </Grid>
                 <Grid
                   item
+                  xs={12}
                   md={6}
                   display={
                     uProviderData?.phoneNumber || user.data?.phone != null
@@ -153,7 +154,7 @@ const ProfileView = () => {
                   >
                     <Typography variant="p">
                       PHONE:{" "}
-                      <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                      <Typography variant="p" sx={{ fontWeight: "bold", fontSize: {xs: 15, md: "auto"} }}>
                         {uProviderData?.phoneNumber == null
                           ? user.data?.phone
                           : uProviderData?.phoneNumber}
@@ -163,6 +164,7 @@ const ProfileView = () => {
                 </Grid>
                 <Grid
                   item
+                  xs={12}
                   md={
                     uProviderData?.phoneNumber || user.data?.phone == null
                       ? 6
@@ -182,7 +184,7 @@ const ProfileView = () => {
                   >
                     <Typography variant="p">
                       EMAIL:{" "}
-                      <Typography variant="p" sx={{ fontWeight: "bold" }}>
+                      <Typography variant="p" sx={{ fontWeight: "bold", fontSize: {xs: 15, md: "auto"} }}>
                         {userLogged?.email}
                       </Typography>
                     </Typography>
@@ -193,7 +195,7 @@ const ProfileView = () => {
               {uProviderData?.displayName == null && (
                 <>
                   <Divider sx={{ width: "40%", margin: "0 auto" }} />
-                  <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
+                  <Box sx={{ display: "flex", justifyContent: {xs: 'center', md: "flex-end"}, gap: 1 }}>
                     <Link to={"/update-profile"}>
                       <Button
                         sx={{

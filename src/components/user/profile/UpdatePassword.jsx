@@ -134,13 +134,14 @@ const UpdatePassword = () => {
                 p: 4,
                 display: "flex",
                 gap: 5,
-                maxWidth: { xs: 350, md: 1200 },
+                maxWidth: {xs: "auto", md: 1200},
+                width: { xs: "85%", md: "auto" },
                 flexDirection: "column",
               }}
             >
               <Box
                 sx={{
-                  width: 400,
+                  width: {xs: "100%", md: 400},
                   display: "flex",
                   flexDirection: "column",
                   gap: 3,
@@ -222,7 +223,7 @@ const UpdatePassword = () => {
                     <Button
                       variant="contained"
                       sx={{
-                        width: 150,
+                        width: {xs: "auto", md: 150},
                         fontSize: 17,
                         fontWeight: "400",
                         backgroundColor: "#d32f2f",
@@ -236,7 +237,7 @@ const UpdatePassword = () => {
                   <LoadingButton
                     variant="contained"
                     sx={{
-                      width: 150,
+                      width: {xs: "auto", md: 150},
                       fontSize: 17,
                       fontWeight: "400",
                       backgroundColor: "#3c733f",
