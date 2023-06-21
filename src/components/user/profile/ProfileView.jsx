@@ -12,7 +12,7 @@ import {
   Grid,
   Divider,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const ProfileView = () => {
   const [loading, setLoading] = useState(false);
@@ -44,6 +44,7 @@ const ProfileView = () => {
 
   return (
     <>
+      {userLogged == null && <Navigate to={"/"} />}
       {updateSuccess && (
         <Snackbar
           open={snackbar}
@@ -192,11 +193,11 @@ const ProfileView = () => {
               {uProviderData?.displayName == null && (
                 <>
                   <Divider sx={{ width: "40%", margin: "0 auto" }} />
-                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}>
                     <Link to={"/update-profile"}>
                       <Button
                         sx={{
-                          width: 200,
+                          width: 'auto',
                           fontSize: 17,
                           fontWeight: "700",
                           backgroundColor: "#3c733f",
@@ -205,6 +206,20 @@ const ProfileView = () => {
                         }}
                       >
                         UPDATE PROFILE
+                      </Button>
+                    </Link>
+                    <Link to={"/update-password"}>
+                      <Button
+                        sx={{
+                          width: 'auto',
+                          fontSize: 17,
+                          fontWeight: "700",
+                          backgroundColor: "#3c733f",
+                          color: "white",
+                          "&:hover": { backgroundColor: "#224024" },
+                        }}
+                      >
+                        UPDATE PASSWORD
                       </Button>
                     </Link>
                   </Box>

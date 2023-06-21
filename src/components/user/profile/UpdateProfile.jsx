@@ -1,52 +1,70 @@
-import { useState } from "react";
-import { useAuth } from "../../hooks/CustomHooks";
-import { useEffect } from "react";
-import { Navigate } from "react-router-dom";
 import {
-  Snackbar,
-  Container,
   Box,
-  Alert,
   CircularProgress,
-  Typography,
-  TextField,
   Card,
+  TextField,
+  Container,
+  Typography,
+  Snackbar,
+  Alert,
+  Button,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../../hooks/CustomHooks";
 
-const ResetPasswordView = () => {
+import { Link, Navigate } from "react-router-dom";
+
+const UpdateProfile = () => {
   const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState("");
   const {
     userLogged,
-    buttonLoading,
-    commonResetPassword,
-    CloseAllSnackbar,
-    forgotSuccess,
+    updateUserProfile,
+    getUserById,
     error,
+    updateSuccess,
     message,
+    buttonLoading,
+    CloseAllSnackbar,
   } = useAuth();
+  const [user, setUser] = useState({
+    fullname: "",
+    phone: "",
+  });
 
-  const HandleEmailChange = ({ target: { value } }) => {
-    setEmail(value);
+  const uid = userLogged?.uid;
+
+  const HandleUserChange = ({ target: { name, value } }) => {
+    setUser({ ...user, [name]: value });
   };
 
-  const HandleResetPassword = async (e) => {
+  const HandleUpdateUser = async (e) => {
     e.preventDefault();
-    await commonResetPassword(email);
+    await updateUserProfile(uid, user);
   };
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2500);
-  }, []);
-
+    getUserById(uid).then((res) => {
+      const result = {
+        id: res.id,
+        data: res.data(),
+      };
+      setUser({
+        fullname: result.data?.fullname,
+        phone: result.data?.phone,
+      });
+    });
+    setTimeout(() => setLoading(false), 2500);
+  }, [getUserById, uid]);
   return (
     <>
-      {userLogged != null && <Navigate to={"/"} />}
-      {forgotSuccess && <Navigate to={"/login"} />}
+      {userLogged == null && <Navigate to={"/"} />}
+      {updateSuccess && (
+        <>
+          <Navigate to="/my-profile" />
+        </>
+      )}
       <Snackbar open={error} onClose={CloseAllSnackbar} autoHideDuration={1500}>
         <Alert
           onClose={CloseAllSnackbar}
@@ -91,7 +109,7 @@ const ResetPasswordView = () => {
                   textTransform: "uppercase",
                 }}
               >
-                RESET PASSWORD
+                UPDATE PROFILE
               </Typography>
             </Box>
             <Card
@@ -103,20 +121,6 @@ const ResetPasswordView = () => {
                 flexDirection: "column",
               }}
             >
-              <Typography
-                variant="p"
-                sx={{
-                  fontSize: 15,
-                  fontStyle: "italic",
-                  color: "#272727",
-                  width: 400,
-                  textAlign: "center",
-                  margin: "0 auto",
-                }}
-              >
-                For reset your account password, please send your email to
-                verify if exists an account with this.
-              </Typography>
               <Box
                 sx={{
                   width: 400,
@@ -127,37 +131,55 @@ const ResetPasswordView = () => {
               >
                 <TextField
                   sx={{ width: "100%" }}
-                  error={false}
-                  label="Email"
-                  name="email"
-                  helperText=""
+                  label="Fullname"
+                  name="fullname"
                   variant="filled"
                   color="success"
-                  onChange={HandleEmailChange}
+                  value={(user && user?.fullname) || ""}
+                  onChange={HandleUserChange}
+                  suppressContentEditableWarning={true}
                 />
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: { xs: "column", md: "row" },
-                    justifyContent: { xs: "center", md: "space-between" },
-                    alignItems: "center",
-                  }}
-                >
+                <TextField
+                  sx={{ width: "100%" }}
+                  label="Phone"
+                  name="phone"
+                  variant="filled"
+                  color="success"
+                  value={(user && user?.phone) || ""}
+                  onChange={HandleUserChange}
+                  suppressContentEditableWarning={true}
+                />
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Link to={"/my-profile"}>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        width: 150,
+                        fontSize: 17,
+                        fontWeight: "400",
+                        backgroundColor: "#d32f2f",
+                        mb: { xs: 2, md: 0 },
+                        "&:hover": { backgroundColor: "#8c2222" },
+                      }}
+                    >
+                      CANCEL
+                    </Button>
+                  </Link>
                   <LoadingButton
                     variant="contained"
                     sx={{
-                      width: "100%",
+                      width: 150,
                       fontSize: 17,
                       fontWeight: "400",
                       backgroundColor: "#3c733f",
                       mb: { xs: 2, md: 0 },
                       "&:hover": { backgroundColor: "#224024" },
                     }}
-                    onClick={HandleResetPassword}
+                    onClick={HandleUpdateUser}
                     loading={buttonLoading}
                     loadingPosition="end"
                   >
-                    <span>CHECK EMAIL</span>
+                    <span>UPDATE</span>
                   </LoadingButton>
                 </Box>
               </Box>
@@ -169,4 +191,4 @@ const ResetPasswordView = () => {
   );
 };
 
-export default ResetPasswordView;
+export default UpdateProfile;

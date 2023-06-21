@@ -28,6 +28,7 @@ const RegisterView = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const {
+    userLogged,
     commonRegister,
     error,
     registerSuccess,
@@ -71,6 +72,7 @@ const RegisterView = () => {
   }, []);
   return (
     <>
+    {userLogged != null && <Navigate to={"/"} />}
       {registerSuccess && (
         <>
           <Navigate to="/login" />

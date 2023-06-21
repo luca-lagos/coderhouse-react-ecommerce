@@ -19,19 +19,12 @@ import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
 import TinyColor from "tinycolor2";
-import { useAuth, useItem } from "../../hooks/CustomHooks";
+import { useAuth } from "../../hooks/CustomHooks";
 
 const MenuWidget = ({ title, items, HandleClose }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [logout, setLogout] = useState(false);
   const { logOut, userLogged } = useAuth();
-  const { categories } = useItem();
-
-  const SetItemLink = (e) => {
-    const result = categories.filter((c) => c.id === e.categoryId);
-    return result[0]?.link + "/" + e.link;
-  };
-
   const HandleOpenModal = () => {
     setModalOpen(true);
   };
@@ -128,7 +121,7 @@ const MenuWidget = ({ title, items, HandleClose }) => {
                 }}
               >
                 {items?.map((value, index) => (
-                  <Link key={index} to={SetItemLink(value)}>
+                  <Link key={index} to={"/" + value.actualLink}>
                     <Card
                       sx={{
                         maxWidth: { xs: 225, md: 250 },
@@ -141,7 +134,7 @@ const MenuWidget = ({ title, items, HandleClose }) => {
                       <CardMedia
                         component="img"
                         height="194"
-                        image="/images/products/cloth.webp"
+                        image={value.image}
                         alt=""
                       />
                       <CardContent

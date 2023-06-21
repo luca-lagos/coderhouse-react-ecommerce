@@ -14,7 +14,9 @@ import OrderContainer from "./components/user/order/OrderContainer";
 import OrderDetail from "./components/user/order/OrderDetail";
 import OrderFinished from "./components/user/order/OrderFinished";
 import ProfileView from "./components/user/profile/ProfileView";
-import ProfileForm from "./components/user/profile/ProfileForm";
+import ResetPasswordView from "./components/auth/ResetPasswordView";
+import UpdateProfile from "./components/user/profile/UpdateProfile";
+import UpdatePassword from "./components/user/profile/UpdatePassword";
 
 const App = () => {
   return (
@@ -35,11 +37,16 @@ const App = () => {
                   <Route path="/cart" element={<CartView />} />
                   <Route path="/login" element={<LoginView />} />
                   <Route path="/register" element={<RegisterView />} />
+                  <Route
+                    path="/forgot-password"
+                    element={<ResetPasswordView />}
+                  />
                   <Route path="/my-orders" element={<OrderContainer />} />
                   <Route path="/my-orders/:id" element={<OrderDetail />} />
                   <Route path="/order-finished" element={<OrderFinished />} />
                   <Route path="/my-profile" element={<ProfileView />} />
-                  <Route path="/update-profile" element={<ProfileForm />} />
+                  <Route path="/update-profile" element={<UpdateProfile />} />
+                  <Route path="/update-password" element={<UpdatePassword />} />
                 </Routes>
               </BrowserRouter>
             </OrderProvider>

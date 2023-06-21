@@ -2,7 +2,6 @@ import {
   Box,
   CircularProgress,
   Card,
-  TextField,
   Container,
   Typography,
   Snackbar,
@@ -22,40 +21,43 @@ import { useAuth } from "../../../hooks/CustomHooks";
 
 import { Link, Navigate } from "react-router-dom";
 
-const ProfileForm = () => {
+const UpdatePassword = () => {
   const [loading, setLoading] = useState(true);
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showRepeatNewPassword, setShowRepeatNewPassword] = useState(false);
   const {
     userLogged,
-    updateUser,
-    getUserById,
+    updateUserPassword,
     error,
     updateSuccess,
     message,
-    updateLoading,
+    buttonLoading,
     CloseAllSnackbar,
   } = useAuth();
   const [user, setUser] = useState({
-    fullname: "",
-    phone: "",
-    password: "",
-    repeatPassword: "",
+    currentPassword: "",
+    newPassword: "",
+    repeatNewPassword: "",
   });
 
-  const uid = userLogged?.uid;
+  const HandleClickShowCurrentPassword = () =>
+    setShowCurrentPassword((show) => !show);
 
-  const HandleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const HandleMouseDownPassword = (e) => {
+  const HandleMouseDownCurrentPassword = (e) => {
     e.preventDefault();
   };
 
-  const HandleClickShowRepeatPassword = () =>
-    setShowRepeatPassword((show) => !show);
+  const HandleClickShowNewPassword = () => setShowNewPassword((show) => !show);
 
-  const HandleMouseDownRepeatPassword = (e) => {
+  const HandleMouseDownNewPassword = (e) => {
+    e.preventDefault();
+  };
+
+  const HandleClickShowRepeatNewPassword = () =>
+    setShowRepeatNewPassword((show) => !show);
+
+  const HandleMouseDownRepeatNewPassword = (e) => {
     e.preventDefault();
   };
 
@@ -63,28 +65,15 @@ const ProfileForm = () => {
     setUser({ ...user, [name]: value });
   };
 
-  const HandleUpdateUser = (e) => {
+  const HandleUpdateUserPassword = (e) => {
     e.preventDefault();
-    updateUser(uid, user, currentPassword);
+    updateUserPassword(user);
   };
 
   useEffect(() => {
     setLoading(true);
-    getUserById(uid).then((res) => {
-      const result = {
-        id: res.id,
-        data: res.data(),
-      };
-      setUser({
-        fullname: result.data?.fullname,
-        phone: result.data?.phone,
-        password: result.data?.password,
-        repeatPassword: result.data?.password,
-      });
-      setCurrentPassword(result.data?.password);
-    });
     setTimeout(() => setLoading(false), 2500);
-  }, [getUserById, uid]);
+  }, []);
   return (
     <>
       {userLogged == null && <Navigate to={"/"} />}
@@ -137,7 +126,7 @@ const ProfileForm = () => {
                   textTransform: "uppercase",
                 }}
               >
-                UPDATE PROFILE
+                UPDATE PASSWORD
               </Typography>
             </Box>
             <Card
@@ -157,65 +146,68 @@ const ProfileForm = () => {
                   gap: 3,
                 }}
               >
-                <TextField
-                  sx={{ width: "100%" }}
-                  label="Fullname"
-                  name="fullname"
-                  variant="filled"
-                  color="success"
-                  value={(user && user?.fullname) || ""}
-                  onChange={HandleUserChange}
-                  suppressContentEditableWarning={true}
-                />
-                <TextField
-                  sx={{ width: "100%" }}
-                  label="Phone"
-                  name="phone"
-                  variant="filled"
-                  color="success"
-                  value={(user && user?.phone) || ""}
-                  onChange={HandleUserChange}
-                  suppressContentEditableWarning={true}
-                />
                 <FormControl sx={{ width: "100%" }} variant="filled">
-                  <InputLabel color="success">Password</InputLabel>
+                  <InputLabel color="success">Old password</InputLabel>
                   <FilledInput
-                    name="password"
+                    name="currentPassword"
                     color="success"
-                    type={showPassword ? "text" : "password"}
-                    value={(user && user?.password) || ""}
+                    type={showCurrentPassword ? "text" : "password"}
                     onChange={HandleUserChange}
                     suppressContentEditableWarning={true}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
-                          onClick={HandleClickShowPassword}
-                          onMouseDown={HandleMouseDownPassword}
+                          onClick={HandleClickShowCurrentPassword}
+                          onMouseDown={HandleMouseDownCurrentPassword}
                           edge="end"
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showCurrentPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     }
                   />
                 </FormControl>
                 <FormControl sx={{ width: "100%" }} variant="filled">
-                  <InputLabel color="success">Repeat password</InputLabel>
+                  <InputLabel color="success">New password</InputLabel>
                   <FilledInput
-                    name="repeatPassword"
+                    name="newPassword"
                     color="success"
-                    type={showRepeatPassword ? "text" : "password"}
-                    value={(user && user?.repeatPassword) || ""}
+                    type={showNewPassword ? "text" : "password"}
                     onChange={HandleUserChange}
                     suppressContentEditableWarning={true}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
-                          onClick={HandleClickShowRepeatPassword}
-                          onMouseDown={HandleMouseDownRepeatPassword}
+                          onClick={HandleClickShowNewPassword}
+                          onMouseDown={HandleMouseDownNewPassword}
                           edge="end"
                         >
-                          {showRepeatPassword ? (
+                          {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+                <FormControl sx={{ width: "100%" }} variant="filled">
+                  <InputLabel color="success">Repeat new password</InputLabel>
+                  <FilledInput
+                    name="repeatNewPassword"
+                    color="success"
+                    type={showRepeatNewPassword ? "text" : "password"}
+                    onChange={HandleUserChange}
+                    suppressContentEditableWarning={true}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={HandleClickShowRepeatNewPassword}
+                          onMouseDown={HandleMouseDownRepeatNewPassword}
+                          edge="end"
+                        >
+                          {showRepeatNewPassword ? (
                             <VisibilityOff />
                           ) : (
                             <Visibility />
@@ -251,8 +243,8 @@ const ProfileForm = () => {
                       mb: { xs: 2, md: 0 },
                       "&:hover": { backgroundColor: "#224024" },
                     }}
-                    onClick={HandleUpdateUser}
-                    loading={updateLoading}
+                    onClick={HandleUpdateUserPassword}
+                    loading={buttonLoading}
                     loadingPosition="end"
                   >
                     <span>UPDATE</span>
@@ -267,4 +259,4 @@ const ProfileForm = () => {
   );
 };
 
-export default ProfileForm;
+export default UpdatePassword;

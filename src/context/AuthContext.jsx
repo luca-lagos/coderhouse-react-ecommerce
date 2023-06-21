@@ -24,9 +24,9 @@ export const AuthProvider = ({ children }) => {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [registerSuccess, setRegisterSuccess] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [forgotSuccess, setForgotSuccess] = useState(false);
   const [message, setMessage] = useState("");
   const [buttonLoading, setButtonLoading] = useState(false);
-  const [updateLoading, setUpdateLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
   const commonRegister = async (path, user) => {
@@ -69,7 +69,6 @@ export const AuthProvider = ({ children }) => {
             fullname: user.fullname,
             email: user.email,
             phone: user.phone,
-            password: user.password,
           }).then(() => {
             setButtonLoading(false);
             setError(false);
@@ -121,7 +120,6 @@ export const AuthProvider = ({ children }) => {
         setButtonLoading(false);
         setError(true);
         setLoginSuccess(false);
-        console.log(err.code);
         switch (err.code) {
           case "auth/wrong-password":
             setMessage("The password is incorrect");
@@ -161,7 +159,26 @@ export const AuthProvider = ({ children }) => {
   };
 
   const commonResetPassword = async (email) => {
-    await sendPasswordResetEmail(auth, email);
+    setButtonLoading(true);
+    await sendPasswordResetEmail(auth, email)
+      .then(() => {
+        setButtonLoading(false);
+        setError(false);
+        setForgotSuccess(true);
+        setMessage("Please check your email to reset your password");
+        setTimeout(() => setForgotSuccess(false), 3000);
+      })
+      .catch((err) => {
+        console.log(err.code);
+        setButtonLoading(false);
+        setError(true);
+        setForgotSuccess(false);
+        switch (err.code) {
+          case "auth/user-not-found":
+            setMessage("The user is not registered");
+            break;
+        }
+      });
   };
 
   const logOut = () => {
@@ -181,69 +198,86 @@ export const AuthProvider = ({ children }) => {
     return await reauthenticateWithCredential(userLogged, credential);
   };
 
-  const updateUser = async (uid, user, currentPassword) => {
-    setUpdateLoading(true);
+  const updateUserPassword = async (user) => {
+    setButtonLoading(true);
+    if (user.currentPassword == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The current password input is empty");
+    } else if (user.newPassword == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The new password input is empty");
+    } else if (user.repeatNewPassword == "") {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The repeat new password input is empty");
+    } else if (user.newPassword != user.repeatNewPassword) {
+      setButtonLoading(false);
+      setError(true);
+      setUpdateSuccess(false);
+      setMessage("The new passwords are not the same");
+    } else {
+      await reauthenticateUser(user.currentPassword)
+        .then(() => {
+          updatePassword(userLogged, user.newPassword)
+            .then(() => {
+              setButtonLoading(false);
+              setError(false);
+              setUpdateSuccess(true);
+              setMessage("The password has been updated successfully");
+              logOut();
+              setTimeout(() => setUpdateSuccess(false), 3000);
+            })
+            .catch((err) => {
+              console.log(err.code);
+              setButtonLoading(false);
+              setError(true);
+              setUpdateSuccess(false);
+              setMessage(err.code);
+            });
+        })
+        .catch(() => {
+          setButtonLoading(false);
+          setError(true);
+          setUpdateSuccess(false);
+          setMessage("The current password is incorrect");
+        });
+    }
+  };
+
+  const updateUserProfile = async (uid, user) => {
+    setButtonLoading(true);
     if (user.fullname == "") {
-      setUpdateLoading(false);
+      setButtonLoading(false);
       setError(true);
       setUpdateSuccess(false);
       setMessage("The fullname input is empty");
     } else if (user.phone == "") {
-      setUpdateLoading(false);
+      setButtonLoading(false);
       setError(true);
       setUpdateSuccess(false);
       setMessage("The phone input is empty");
-    } else if (user.email == "") {
-      setUpdateLoading(false);
-      setError(true);
-      setUpdateSuccess(false);
-      setMessage("The email input is empty");
-    } else if (user.password == "") {
-      setUpdateLoading(false);
-      setError(true);
-      setUpdateSuccess(false);
-      setMessage("The password input is empty");
-    } else if (user.repeatPassword == "") {
-      setUpdateLoading(false);
-      setError(true);
-      setUpdateSuccess(false);
-      setMessage("The repeat password input is empty");
-    } else if (user.password != user.repeatPassword) {
-      setUpdateLoading(false);
-      setError(true);
-      setUpdateSuccess(false);
-      setMessage("The passwords are not the same");
     } else {
-      await reauthenticateUser(currentPassword)
+      await updateDoc(doc(database, "/User", uid), {
+        fullname: user.fullname,
+        phone: user.phone,
+      })
         .then(() => {
-          updatePassword(userLogged, user.password)
-            .then(() => {
-              updateDoc(doc(database, "/User", uid), {
-                fullname: user.fullname,
-                phone: user.phone,
-                password: user.password,
-              })
-                .then(() => {
-                  setUpdateLoading(false);
-                  setError(false);
-                  setUpdateSuccess(true);
-                  setMessage("Profile has been updated successfully");
-                  logOut();
-                  setTimeout(() => setUpdateSuccess(false), 500);
-                })
-                .catch((err) => {
-                  setUpdateLoading(false);
-                  setError(true);
-                  setUpdateSuccess(false);
-                  setMessage(err.code);
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          setButtonLoading(false);
+          setError(false);
+          setUpdateSuccess(true);
+          setMessage("Profile has been updated successfully");
+          setTimeout(() => setUpdateSuccess(false), 3000);
         })
         .catch((err) => {
-          console.log(err);
+          setButtonLoading(false);
+          setError(true);
+          setUpdateSuccess(false);
+          setMessage(err.code);
         });
     }
   };
@@ -253,6 +287,7 @@ export const AuthProvider = ({ children }) => {
     setLoginSuccess(false);
     setRegisterSuccess(false);
     setUpdateSuccess(false);
+    setForgotSuccess(false);
   };
 
   useEffect(() => {
@@ -268,9 +303,9 @@ export const AuthProvider = ({ children }) => {
         loginSuccess,
         registerSuccess,
         updateSuccess,
+        forgotSuccess,
         message,
         buttonLoading,
-        updateLoading,
         googleLoading,
         userLogged,
         CloseAllSnackbar,
@@ -280,7 +315,8 @@ export const AuthProvider = ({ children }) => {
         commonResetPassword,
         logOut,
         getUserById,
-        updateUser,
+        updateUserProfile,
+        updateUserPassword,
       }}
     >
       {children}

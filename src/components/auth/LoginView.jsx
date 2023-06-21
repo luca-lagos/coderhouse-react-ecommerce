@@ -29,11 +29,14 @@ const LoginView = () => {
   const [snackbar, setSnackbar] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const {
+    userLogged,
     commonLogin,
     googleLogin,
     error,
     registerSuccess,
     loginSuccess,
+    forgotSuccess,
+    updateSuccess,
     message,
     buttonLoading,
     googleLoading,
@@ -75,12 +78,13 @@ const LoginView = () => {
 
   return (
     <>
+      {userLogged != null && <Navigate to={"/"} />}
       {loginSuccess && (
         <>
           <Navigate to="/" />
         </>
       )}
-      {registerSuccess && (
+      {(registerSuccess || updateSuccess || forgotSuccess) && (
         <Snackbar
           open={snackbar}
           onClose={HandleCloseSnackbar}

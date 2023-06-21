@@ -63,7 +63,7 @@ const NavBar = () => {
               sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1, mt: 1 }}
             >
               <Link to="/">
-                <img style={{ width: "50px" }} src="/images/react-icon.png" />
+                <img style={{ width: 115 }} src="/images/mayte-logo.png" />
               </Link>
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -105,7 +105,7 @@ const NavBar = () => {
                   <IconButton onClick={() => setUserOpen(true)}>
                     <Avatar
                       alt="Remy Sharp"
-                      sx={{ backgroundColor: "#66bb6a", color: "#272727" }}
+                      sx={{ backgroundColor: "#66bb6a", color: "white" }}
                       src=""
                     />
                   </IconButton>
@@ -130,7 +130,7 @@ const NavBar = () => {
                     <IconButton>
                       <Avatar
                         alt="Remy Sharp"
-                        sx={{ backgroundColor: "#66bb6a", color: "#272727" }}
+                        sx={{ backgroundColor: "#66bb6a", color: "white" }}
                       >
                         <LoginIcon />
                       </Avatar>

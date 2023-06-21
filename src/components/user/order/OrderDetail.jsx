@@ -122,7 +122,7 @@ const Order = () => {
                       <Link to={"/" + value.actualLink}>
                         <Box sx={{ display: "flex", gap: 3 }}>
                           <img
-                            src="/images/products/cloth.webp"
+                            src={value.image}
                             style={{
                               width: 100,
                               height: 100,
