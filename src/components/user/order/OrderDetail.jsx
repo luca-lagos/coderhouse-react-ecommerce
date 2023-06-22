@@ -75,7 +75,7 @@ const Order = () => {
               <Typography
                 component="h2"
                 sx={{
-                  fontSize: {xs: 20, md: 28},
+                  fontSize: { xs: 20, md: 28 },
                   fontWeight: "bold",
                   mb: { xs: 1, md: 4 },
                   color: "#66bb6a",
@@ -88,7 +88,7 @@ const Order = () => {
               <Typography
                 component="h2"
                 sx={{
-                  fontSize: {xs: 20, md: 28},
+                  fontSize: { xs: 20, md: 28 },
                   fontWeight: "bold",
                   mb: 4,
                   color: "#272727",
@@ -122,10 +122,11 @@ const Order = () => {
                   <>
                     <Box
                       key={index}
-                      display={{
+                      sx={{
                         display: "flex",
-                        justifyContent: "center",
+                        justifyContent: {xs: "center", md: "space-between"},
                         alignItems: "center",
+                        
                       }}
                     >
                       <Link to={"/" + value.actualLink}>
@@ -268,30 +269,19 @@ const Order = () => {
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: { xs: "column", md: "row" },
-                  justifyContent: "space-between",
+                  flexDirection: {xs: "column", md: "row"},
+                  justifyContent: {xs: "center", md: "space-between"},
                   alignItems: "center",
-                  gap: 4,
+                  gap: {xs: 2, md: 4},
                   pl: { xs: 0, md: 3 },
                   pr: { xs: 0, md: 3 },
                   mb: 2,
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "center",
-                    gap: 4,
-                  }}
-                >
                   <Typography
                     variant="h4"
                     sx={{
                       fontSize: { xs: 20, md: 25 },
-                      display: "flex",
-                      alignItems: "center",
-                      margin: "0 auto",
-                      textAlign: "center",
                     }}
                   >
                     TOTAL: ${order.data?.totalPrice}
@@ -300,8 +290,6 @@ const Order = () => {
                     variant="h4"
                     sx={{
                       fontSize: { xs: 20, md: 25 },
-                      display: "flex",
-                      alignItems: "center",
                     }}
                   >
                     DATE: {FormatDate(order.data?.date)}
@@ -311,8 +299,7 @@ const Order = () => {
                       <Button
                         variant="contained"
                         sx={{
-                          display: { xs: "none", md: "flex" },
-                          width: 50,
+                          width: { xs: 150, md: 50 },
                           height: "auto",
                           backgroundColor: "#d32f2f",
                           color: "white",
@@ -328,28 +315,6 @@ const Order = () => {
                     </Link>
                   </Tooltip>
                 </Box>
-                <Tooltip title={"Go back"}>
-                  <Link to={"/my-orders"}>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        display: { xs: "flex", md: "none" },
-                        width: 150,
-                        height: 50,
-                        backgroundColor: "#d32f2f",
-                        color: "white",
-                        borderRadius: 5,
-                        fontSize: 20,
-                        fontWeight: "bold",
-                        mb: { xs: 2, md: 0 },
-                        "&:hover": { backgroundColor: "#8c2222" },
-                      }}
-                    >
-                      <ArrowBackIcon />
-                    </Button>
-                  </Link>
-                </Tooltip>
-              </Box>
             </Card>
           </>
         )}

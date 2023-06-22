@@ -143,6 +143,9 @@ export const AuthProvider = ({ children }) => {
   const googleLogin = async () => {
     setGoogleLoading(true);
     const googleProvider = new GoogleAuthProvider();
+    googleProvider.setCustomParameters({
+      prompt: "select_account",
+    });
     await signInWithPopup(auth, googleProvider)
       .then(() => {
         setGoogleLoading(false);

@@ -167,7 +167,7 @@ const MenuWidget = ({ title, items, HandleClose }) => {
                                 fontWeight: 600,
                                 backgroundColor: "#272727",
                               }}
-                              label={"QUAN: " + value.quantity}
+                              label={"Q: " + value.quantity}
                             />
                             <Chip
                               sx={{
