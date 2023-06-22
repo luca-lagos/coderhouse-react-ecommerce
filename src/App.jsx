@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import ItemListContainer from "./components/home/ItemListContainer";
 import "./App.css";
@@ -26,7 +26,7 @@ const App = () => {
         <ItemProvider>
           <CartProvider>
             <OrderProvider>
-              <HashRouter>
+              <BrowserRouter>
                 <div style={{ paddingBottom: 200 }}>
                   <NavBar />
                   <Routes>
@@ -55,7 +55,7 @@ const App = () => {
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </div>
-              </HashRouter>
+              </BrowserRouter>
             </OrderProvider>
           </CartProvider>
         </ItemProvider>
