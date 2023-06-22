@@ -16,7 +16,6 @@ import { Navigate } from "react-router-dom";
 
 const ItemDetail = ({ item, actualLink }) => {
   const [loading, setLoading] = useState(true);
-  const [snackbar, setSnackbar] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   const { cart, AddToCart, CloseAllSnackbar, snackSuccess, snackError } =
@@ -35,10 +34,6 @@ const ItemDetail = ({ item, actualLink }) => {
     quantity < item[0].stock && setQuantity(quantity + 1);
   };
 
-  const HandleCloseSnackbar = () => {
-    setSnackbar(false);
-  };
-
   const HandleAddToCart = () => {
     const { stock, ...newItem } = item[0];
     AddToCart(newItem, quantity, actualLink);
@@ -46,19 +41,6 @@ const ItemDetail = ({ item, actualLink }) => {
 
   return (
     <>
-      <Snackbar
-        open={snackbar}
-        onClose={HandleCloseSnackbar}
-        autoHideDuration={3000}
-      >
-        <Alert
-          onClose={HandleCloseSnackbar}
-          severity="warning"
-          sx={{ width: "100%" }}
-        >
-          Remember to select garment requirements
-        </Alert>
-      </Snackbar>
       <Snackbar
         open={snackError}
         onClose={CloseAllSnackbar}
@@ -129,10 +111,14 @@ const ItemDetail = ({ item, actualLink }) => {
               <Box
                 sx={{
                   display: "flex",
-                  justifyContent: "center"
+                  justifyContent: "center",
                 }}
               >
-                <img src={item[0]?.image} alt="" style={{width: 300, height: "auto", objectFit: "cover"}}/>
+                <img
+                  src={item[0]?.image}
+                  alt=""
+                  style={{ width: 300, height: "auto", objectFit: "cover" }}
+                />
               </Box>
               <Box
                 sx={{
@@ -193,7 +179,7 @@ const ItemDetail = ({ item, actualLink }) => {
                   component={"p"}
                   sx={{
                     maxWidth: { xs: 300, md: 750 },
-                    mt: {xs: "auto", md: 1},
+                    mt: { xs: "auto", md: 1 },
                     textAlign: { xs: "center", md: "left" },
                   }}
                 >

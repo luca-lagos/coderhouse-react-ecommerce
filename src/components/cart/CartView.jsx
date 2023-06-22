@@ -62,7 +62,7 @@ const CartContainer = () => {
           severity="success"
           sx={{ width: "100%" }}
         >
-          Se ha eliminado el producto del carrito
+          The product has been removed from the cart
         </Alert>
       </Snackbar>
       <Snackbar
