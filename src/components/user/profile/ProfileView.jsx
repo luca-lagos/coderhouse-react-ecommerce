@@ -24,8 +24,6 @@ const ProfileView = () => {
 
   const uProviderData = userLogged?.providerData[0];
 
-  console.log(uProviderData);
-
   const HandleCloseSnackbar = () => {
     setSnackbar(false);
   };

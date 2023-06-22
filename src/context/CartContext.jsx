@@ -84,7 +84,7 @@ export const CartProvider = ({ children }) => {
       userId: uid,
       items: cart,
       totalPrice: totalPrice,
-      state: 'generated',
+      state: "generated",
       date: Timestamp.fromDate(new Date()),
     };
     setOrderLoading(true);
@@ -95,7 +95,9 @@ export const CartProvider = ({ children }) => {
       if (stockToUpdate < 0) {
         setOrderLoading(false);
         setOrderError(true);
-        setOrderMessage(`No hay stock suficiente del producto: ${item.name}`);
+        setOrderMessage(
+          `There is not enough stock of the product:${item.name}`
+        );
       } else {
         setOrderLoading(false);
         setOrderError(false);
@@ -110,7 +112,10 @@ export const CartProvider = ({ children }) => {
             ClearCart();
           })
           .catch((err) => {
-            console.log(err);
+            setOrderLoading(false);
+            setOrderError(true);
+            setOrderSuccess(false);
+            setOrderMessage(err);
           });
       }
     }

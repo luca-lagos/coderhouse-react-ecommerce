@@ -154,7 +154,7 @@ export const AuthProvider = ({ children }) => {
         setError(true);
         setLoginSuccess(false);
         setGoogleLoading(false);
-        console.log(err.code);
+        setMessage(err.code);
       });
   };
 
@@ -169,7 +169,6 @@ export const AuthProvider = ({ children }) => {
         setTimeout(() => setForgotSuccess(false), 3000);
       })
       .catch((err) => {
-        console.log(err.code);
         setButtonLoading(false);
         setError(true);
         setForgotSuccess(false);
@@ -233,7 +232,6 @@ export const AuthProvider = ({ children }) => {
               setTimeout(() => setUpdateSuccess(false), 3000);
             })
             .catch((err) => {
-              console.log(err.code);
               setButtonLoading(false);
               setError(true);
               setUpdateSuccess(false);

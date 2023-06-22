@@ -56,7 +56,7 @@ const ItemDetail = ({ item, actualLink }) => {
           severity="warning"
           sx={{ width: "100%" }}
         >
-          Recuerde seleccionar los requisitos de la prenda
+          Remember to select garment requirements
         </Alert>
       </Snackbar>
       <Snackbar
@@ -69,7 +69,7 @@ const ItemDetail = ({ item, actualLink }) => {
           severity="warning"
           sx={{ width: "100%" }}
         >
-          La cantidad elegida es mayor al stock
+          The quantity chosen is greater than the stock
         </Alert>
       </Snackbar>
       <Snackbar
@@ -82,7 +82,7 @@ const ItemDetail = ({ item, actualLink }) => {
           severity="success"
           sx={{ width: "100%" }}
         >
-          Ha guardado la prenda en el carrito
+          The garment has been saved to the cart successfully
         </Alert>
       </Snackbar>
       {loading ? (
