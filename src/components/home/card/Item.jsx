@@ -24,8 +24,73 @@ const Item = ({ product }) => {
 
   return (
     <>
+      <Link to={link}>
+        <Card
+          sx={{
+            display: { xs: "block", md: "none" },
+            position: "relative",
+            maxWidth: 350,
+            margin: "0 auto",
+          }}
+        >
+          <CardMedia
+            component="img"
+            height="194"
+            image={product.image}
+            alt=""
+          />
+          <CardContent sx={{ textAlign: "center" }}>
+            <Typography sx={{ color: "#111111", fontSize: "20px", mb: 1 }}>
+              {product.name}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                gap: 2,
+                mb: 2,
+              }}
+            >
+              <Chip
+                sx={{
+                  fontWeight: 600,
+                  backgroundColor: product.color,
+                  pl: 1,
+                  pr: 1,
+                  color: TinyColor(product.color).isDark()
+                    ? "white"
+                    : "#272727",
+                }}
+                label={product.color}
+              />
+              <Chip
+                sx={{ fontWeight: 600, pl: 1, pr: 1 }}
+                label={
+                  product.size === "Small"
+                    ? "S"
+                    : product.size === "Medium"
+                    ? "M"
+                    : product.size === "Large"
+                    ? "L"
+                    : "XL"
+                }
+              />
+            </Box>
+            <Typography
+              sx={{ color: "#111111", fontSize: "25px", fontWeight: "bold" }}
+            >
+              ${product.price}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Link>
       <Card
-        sx={{ position: "relative", maxWidth: 350, margin: "0 auto" }}
+        sx={{
+          display: { xs: "none", md: "block" },
+          position: "relative",
+          maxWidth: 350,
+          margin: "0 auto",
+        }}
         onMouseOver={() => setOverlay(true)}
         onMouseOut={() => setOverlay(false)}
       >
