@@ -1,5 +1,5 @@
 # Mayte Unofficial Ecommerce
-## Proyecto final de React Js - Coderhouse 2023
+## Proyecto final de React Js
 
 ![Home](https://res.cloudinary.com/lucalagos/image/upload/c_pad,b_auto:predominant,fl_preserve_transparency/v1687476191/mayte-home_lflugu.jpg?_s=public-apps)
 
